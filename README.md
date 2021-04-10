@@ -6,7 +6,12 @@ The Mobile UI for Konnector
 
 ## How do I get set up?
 
+* Install npm package manager
+* Install Expo CLI (React Native build tools) `$ npm install -g expo-cli`
 * See Expo instructions `$ expo`
+* Start the development server `$ expo start`/`$ npm start`
+* Open the Expo Go app on your mobile device
+* Choose the option to scan an Expo QR code through the app and point it at the QR code on your command line or Expo browser page
 
 ## Resources
 

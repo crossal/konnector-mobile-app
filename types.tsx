@@ -8,10 +8,14 @@ export type BottomTabParamList = {
   TabTwo: undefined;
 };
 
-export type TabOneParamList = {
-  TabOneScreen: undefined;
+export type ProfileTabParamList = {
+  ProfileScreen: undefined;
 };
 
-export type TabTwoParamList = {
-  TabTwoScreen: undefined;
+export type ConnectionsTabParamList = {
+  ConnectionsScreen: undefined;
+};
+
+export type NotificationsTabParamList = {
+  NotificationsScreen: undefined;
 };
