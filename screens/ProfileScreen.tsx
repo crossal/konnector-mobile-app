@@ -1,56 +1,57 @@
-import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Button, TextInput, ActivityIndicator, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import { Button, TextInput } from 'react-native';
 
 export default function ProfileScreen() {
-  const [email, onChangeEmail] = React.useState(null);
-  const [username, onChangeUsername] = React.useState(null);
-  const [password, onChangePassword] = React.useState(null);
-  const [newPassword, onChangeNewPassword] = React.useState(null);
-  const [firstName, onChangeFirstName] = React.useState(null);
-  const [lastName, onChangeLastName] = React.useState(null);
+  const [isLoading, setLoading] = useState(true);
+  const [user, setUser] = React.useState({});
+
+  useEffect(() => {
+    fetch('http://192.168.8.106:8080/api/health')
+      .then((response) => response.json())
+      .then((json) => setUser(json))
+      .catch((error) => console.error('error: ' + error))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <View style={styles.container}>
-      <TextInput
-        value={email}
-        onChangeText={onChangeEmail}
-        placeholder={'Email'}
-        style={styles.input}
-      />
-      <TextInput
-        value={username}
-        onChangeText={onChangeUsername}
-        placeholder={'Username'}
-        style={styles.input}
-      />
-      <TextInput
-        value={password}
-        onChangeText={onChangePassword}
-        placeholder={'Password'}
-        style={styles.input}
-      />
-      <TextInput
-        value={newPassword}
-        onChangeText={onChangeNewPassword}
-        placeholder={'New Password'}
-        style={styles.input}
-      />
-      <TextInput
-        value={firstName}
-        onChangeText={onChangeFirstName}
-        placeholder={'First name'}
-        style={styles.input}
-      />
-      <TextInput
-        value={lastName}
-        onChangeText={onChangeLastName}
-        placeholder={'Last name'}
-        style={styles.input}
-      />
+      {isLoading ? <ActivityIndicator/> : (
+        <>
+          <TextInput
+            value={user.email}
+            placeholder={'Email'}
+            style={styles.input}
+          />
+          <TextInput
+            value={user.username}
+            placeholder={'Username'}
+            style={styles.input}
+          />
+          <TextInput
+            value={user.password}
+            placeholder={'Password'}
+            style={styles.input}
+          />
+          <TextInput
+            value={user.newPassword}
+            placeholder={'New Password'}
+            style={styles.input}
+          />
+          <TextInput
+            value={user.firstName}
+            placeholder={'First name'}
+            style={styles.input}
+          />
+          <TextInput
+            value={user.lastName}
+            placeholder={'Last name'}
+            style={styles.input}
+          />
+        </>
+      )}
     </View>
   );
 }
