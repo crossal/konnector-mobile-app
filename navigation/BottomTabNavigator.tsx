@@ -21,24 +21,24 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Profile"
+      initialRouteName="ProfileTab"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
       <BottomTab.Screen
-        name="Profile"
+        name="ProfileTab"
         component={ProfileTabNavigator}
         options={{
           tabBarIcon: ({ color }) => <FontAwesome5 name="user-alt" size={24} color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="Connections"
+        name="ConnectionsTab"
         component={ConnectionsTabNavigator}
         options={{
           tabBarIcon: ({ color }) => <FontAwesome5 name="user-friends" size={24} color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="Notifications"
+        name="NotificationsTab"
         component={NotificationsTabNavigator}
         options={{
           tabBarIcon: ({ color }) => <Ionicons name="notifications" size={24} color={color} />,

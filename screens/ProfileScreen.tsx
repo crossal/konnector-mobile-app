@@ -3,13 +3,54 @@ import { StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+import { Button, TextInput } from 'react-native';
 
 export default function ProfileScreen() {
+  const [email, onChangeEmail] = React.useState(null);
+  const [username, onChangeUsername] = React.useState(null);
+  const [password, onChangePassword] = React.useState(null);
+  const [newPassword, onChangeNewPassword] = React.useState(null);
+  const [firstName, onChangeFirstName] = React.useState(null);
+  const [lastName, onChangeLastName] = React.useState(null);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Profile</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/ProfileScreen.tsx" />
+      <TextInput
+        value={email}
+        onChangeText={onChangeEmail}
+        placeholder={'Email'}
+        style={styles.input}
+      />
+      <TextInput
+        value={username}
+        onChangeText={onChangeUsername}
+        placeholder={'Username'}
+        style={styles.input}
+      />
+      <TextInput
+        value={password}
+        onChangeText={onChangePassword}
+        placeholder={'Password'}
+        style={styles.input}
+      />
+      <TextInput
+        value={newPassword}
+        onChangeText={onChangeNewPassword}
+        placeholder={'New Password'}
+        style={styles.input}
+      />
+      <TextInput
+        value={firstName}
+        onChangeText={onChangeFirstName}
+        placeholder={'First name'}
+        style={styles.input}
+      />
+      <TextInput
+        value={lastName}
+        onChangeText={onChangeLastName}
+        placeholder={'Last name'}
+        style={styles.input}
+      />
     </View>
   );
 }
