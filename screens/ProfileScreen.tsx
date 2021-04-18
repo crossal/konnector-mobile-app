@@ -9,10 +9,15 @@ export default function ProfileScreen() {
   const [user, setUser] = React.useState({});
 
   useEffect(() => {
-    fetch('http://192.168.8.106:8080/api/health')
-      .then((response) => response.json())
+    fetch('http://192.168.43.100:8080/api/users/1')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Request issue - ' + response.status);
+        }
+        return response.json();
+      })
       .then((json) => setUser(json))
-      .catch((error) => console.error('error: ' + error))
+      .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   }, []);
 

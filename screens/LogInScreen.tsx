@@ -4,12 +4,13 @@ import { StyleSheet } from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { Button, TextInput } from 'react-native';
+import { AuthContext } from "../utils/AuthContext.tsx";
 
 export default function LogInScreen() {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-//   const { signIn } = React.useContext(AuthContext);
+  const { signIn } = React.useContext(AuthContext);
 
   return (
 

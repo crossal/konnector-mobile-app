@@ -85,7 +85,7 @@ function RootNavigator() {
       {state.isLoading ? (
         // We haven't finished checking for the token yet
         <Stack.Screen name="Splash" component={SplashScreen} />
-      ) : false == true ? (
+      ) : state.userToken == null ? (
         // No token found, user isn't signed in
         <Stack.Screen name="LogIn" component={LogInScreen}
           options={{
