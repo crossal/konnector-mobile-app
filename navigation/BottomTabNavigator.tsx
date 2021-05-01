@@ -16,7 +16,7 @@ const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
 
-export default function BottomTabNavigator() {
+const BottomTabNavigator = ({userId}) => {
   const colorScheme = useColorScheme();
 
   return (
@@ -25,7 +25,7 @@ export default function BottomTabNavigator() {
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
       <BottomTab.Screen
         name="ProfileTab"
-        component={ProfileTabNavigator}
+        children={()=><ProfileTabNavigator userId={userId}/>}
         options={{
           tabBarIcon: ({ color }) => <FontAwesome5 name="user-alt" size={24} color={color} />,
         }}
@@ -48,16 +48,18 @@ export default function BottomTabNavigator() {
   );
 }
 
+export default BottomTabNavigator;
+
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 const ProfileTabStack = createStackNavigator<ProfileTabParamList>();
 
-function ProfileTabNavigator() {
+const ProfileTabNavigator = ({userId}) => {
   return (
     <ProfileTabStack.Navigator>
       <ProfileTabStack.Screen
         name="ProfileScreen"
-        component={ProfileScreen}
+        children={()=><ProfileScreen userId={userId}/>}
         options={{ headerTitle: 'Profile' }}
       />
     </ProfileTabStack.Navigator>

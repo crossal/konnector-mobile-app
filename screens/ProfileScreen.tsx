@@ -4,26 +4,25 @@ import { Button, TextInput, ActivityIndicator, StyleSheet } from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 
-export default function ProfileScreen() {
+import { fetchWrapper } from '../utils/fetchWrapper.tsx';
+
+const ProfileScreen = ({userId}) => {
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = React.useState({});
 
+  console.log("ProfileScreen " + userId);
+
   useEffect(() => {
-    fetch('http://192.168.43.100:8080/api/users/1')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Request issue - ' + response.status);
-        }
-        return response.json();
-      })
-      .then((json) => setUser(json))
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
+    fetchWrapper.get("http://192.168.43.100:8080/api/users/" + userId).then(user => {
+      setUser(user);
+    }).catch(e => {
+    });
+    setLoading(false);
   }, []);
 
   return (
     <View style={styles.container}>
-      {isLoading ? <ActivityIndicator/> : (
+      {isLoading ? <ActivityIndicator size="large" color="#0000ff"/> : (
         <>
           <TextInput
             value={user.email}
@@ -60,6 +59,8 @@ export default function ProfileScreen() {
     </View>
   );
 }
+
+export default ProfileScreen;
 
 const styles = StyleSheet.create({
   container: {
