@@ -9,6 +9,7 @@ import BottomTabNavigator from './BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
 import LogInScreen from '../screens/LogInScreen';
 import SplashScreen from '../screens/SplashScreen';
+import FetchWrapper from '../utils/fetchWrapper.tsx';
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -32,8 +33,13 @@ function RootNavigator() {
   const [userId, setUserId] = React.useState(null);
   const [loggingOut, setLoggingOut] = React.useState(false);
 
+  const handleUnauth = () => {
+    setUserId(null);
+  }
+
+  const fetchWrapper = new FetchWrapper(handleUnauth);
+
   const handleLoggedIn = (userId) => {
-    console.log("handleLoggedIn " + userId);
     setUserId(userId);
   }
 
@@ -44,7 +50,7 @@ function RootNavigator() {
         <Stack.Screen name="Splash" component={SplashScreen} />
       ) : userId == null ? (
         // No token found, user isn't signed in
-        <Stack.Screen name="LogIn" children={()=><LogInScreen handleLoggedIn={handleLoggedIn}/>}
+        <Stack.Screen name="LogIn" children={()=><LogInScreen fetchWrapper={fetchWrapper} handleLoggedIn={handleLoggedIn}/>}
           options={{
             title: 'Log in',
             // When logging out, a pop animation feels intuitive
@@ -54,7 +60,7 @@ function RootNavigator() {
       ) : (
         // User is signed in
         <>
-          <Stack.Screen name="Root" children={()=><BottomTabNavigator userId={userId}/>} />
+          <Stack.Screen name="Root" children={()=><BottomTabNavigator fetchWrapper={fetchWrapper} userId={userId}/>} />
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
         </>
       )}

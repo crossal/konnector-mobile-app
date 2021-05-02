@@ -4,12 +4,10 @@ import { StyleSheet } from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { Button, TextInput } from 'react-native';
-import { fetchWrapper } from '../utils/fetchWrapper.tsx';
 
-const LogInScreen = ({handleLoggedIn}) => {
+const LogInScreen = ({fetchWrapper, handleLoggedIn}) => {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
-
 
   const handleLogin = () => {
     fetchWrapper.post("http://192.168.43.100:8080/api/authenticate", { usernameOrEmail: username, password: password }).then(user => {

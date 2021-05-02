@@ -16,7 +16,7 @@ const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
 
-const BottomTabNavigator = ({userId}) => {
+const BottomTabNavigator = ({fetchWrapper, userId}) => {
   const colorScheme = useColorScheme();
 
   return (
@@ -25,7 +25,7 @@ const BottomTabNavigator = ({userId}) => {
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
       <BottomTab.Screen
         name="ProfileTab"
-        children={()=><ProfileTabNavigator userId={userId}/>}
+        children={()=><ProfileTabNavigator fetchWrapper={fetchWrapper} userId={userId}/>}
         options={{
           tabBarIcon: ({ color }) => <FontAwesome5 name="user-alt" size={24} color={color} />,
         }}
@@ -54,12 +54,12 @@ export default BottomTabNavigator;
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 const ProfileTabStack = createStackNavigator<ProfileTabParamList>();
 
-const ProfileTabNavigator = ({userId}) => {
+const ProfileTabNavigator = ({fetchWrapper, userId}) => {
   return (
     <ProfileTabStack.Navigator>
       <ProfileTabStack.Screen
         name="ProfileScreen"
-        children={()=><ProfileScreen userId={userId}/>}
+        children={()=><ProfileScreen fetchWrapper={fetchWrapper} userId={userId}/>}
         options={{ headerTitle: 'Profile' }}
       />
     </ProfileTabStack.Navigator>

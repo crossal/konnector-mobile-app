@@ -6,7 +6,6 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { AuthContext } from "./utils/AuthContext.tsx";
-import { fetchWrapper } from './utils/fetchWrapper.tsx';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();

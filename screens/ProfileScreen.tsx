@@ -4,13 +4,9 @@ import { Button, TextInput, ActivityIndicator, StyleSheet } from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 
-import { fetchWrapper } from '../utils/fetchWrapper.tsx';
-
-const ProfileScreen = ({userId}) => {
+const ProfileScreen = ({fetchWrapper, userId}) => {
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = React.useState({});
-
-  console.log("ProfileScreen " + userId);
 
   useEffect(() => {
     fetchWrapper.get("http://192.168.43.100:8080/api/users/" + userId).then(user => {
