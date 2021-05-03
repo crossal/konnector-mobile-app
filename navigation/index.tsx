@@ -43,6 +43,10 @@ function RootNavigator() {
     setUserId(userId);
   }
 
+  const handleLogout = () => {
+    setUserId(null);
+  }
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {!dataLoaded ? (
@@ -50,7 +54,7 @@ function RootNavigator() {
         <Stack.Screen name="Splash" component={SplashScreen} />
       ) : userId == null ? (
         // No token found, user isn't signed in
-        <Stack.Screen name="LogIn" children={()=><LogInScreen fetchWrapper={fetchWrapper} handleLoggedIn={handleLoggedIn}/>}
+        <Stack.Screen name="LogIn" children={()=><LogInScreen fetchWrapper={fetchWrapper} handleLoggedInCallback={handleLoggedIn}/>}
           options={{
             title: 'Log in',
             // When logging out, a pop animation feels intuitive
@@ -60,7 +64,7 @@ function RootNavigator() {
       ) : (
         // User is signed in
         <>
-          <Stack.Screen name="Root" children={()=><BottomTabNavigator fetchWrapper={fetchWrapper} userId={userId}/>} />
+          <Stack.Screen name="Root" children={()=><BottomTabNavigator fetchWrapper={fetchWrapper} userId={userId} handleLogoutCallback={handleLogout}/>} />
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
         </>
       )}

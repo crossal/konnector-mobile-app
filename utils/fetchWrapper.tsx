@@ -2,8 +2,8 @@
 
 class FetchWrapper {
 
-  constructor(handleUnauth) {
-    this.handleUnauth = handleUnauth;
+  constructor(handleUnauthCallback) {
+    this.handleUnauthCallback = handleUnauthCallback;
   }
 
   get = (url) => {
@@ -48,7 +48,7 @@ class FetchWrapper {
         console.log("FetchWrapper invalid response, status: " + response.status + ", error: " + error);
 
         if (response.status == 401) {
-         this.handleUnauth();
+         this.handleUnauthCallback();
         }
 
         return Promise.reject(error);
