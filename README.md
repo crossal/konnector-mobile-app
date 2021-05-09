@@ -6,7 +6,7 @@ The Mobile UI for Konnector
 
 ## How do I get set up?
 
-* Install npm package manager
+* Install NPM
 * Install Expo CLI (React Native build tools) `$ npm install -g expo-cli`
 * See Expo instructions `$ expo`
 * Start the development server `$ expo start`/`$ npm start`

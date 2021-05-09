@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, TextInput, ActivityIndicator, StyleSheet } from 'react-native';
+import { TouchableOpacity, TextInput, ActivityIndicator, StyleSheet, ScrollView } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { styles } from '../constants/Style.ts'
+import * as apiConstants from '../constants/API.ts';
 
 const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback}) => {
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = React.useState({});
 
   useEffect(() => {
-    fetchWrapper.get("http://192.168.43.100:8080/api/users/" + userId).then(user => {
+    fetchWrapper.get(apiConstants.BASE_URL + "/api/users/" + userId).then(user => {
       setUser(user);
     }).catch(e => {
     });
@@ -31,7 +32,7 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback}) => {
   return (
     <View style={styles.containerLeft}>
       {isLoading ? <ActivityIndicator size="large" color="#0000ff"/> : (
-        <>
+        <ScrollView style={styles.scrollView}>
           <Text style={styles.buttonLabel}>Email</Text>
           <TextInput
             label="Some label"
@@ -70,12 +71,12 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback}) => {
             style={styles.input}
           />
           <TouchableOpacity style={styles.button} onPress={() => handleSave()}>
-            <Text style={styles.buttonText}>Log in</Text>
+            <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => handleLogout()}>
             <Text style={styles.buttonText}>Log Out</Text>
           </TouchableOpacity>
-        </>
+        </ScrollView>
       )}
     </View>
   );

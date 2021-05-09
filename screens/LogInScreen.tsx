@@ -5,13 +5,14 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { TouchableOpacity, TextInput } from 'react-native';
 import { styles } from '../constants/Style.ts'
+import * as apiConstants from '../constants/API.ts';
 
 const LogInScreen = ({fetchWrapper, handleLoggedInCallback}) => {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
 
   const handleLogin = () => {
-    fetchWrapper.post("http://192.168.43.100:8080/api/authenticate", { usernameOrEmail: username, password: password }).then(user => {
+    fetchWrapper.post(apiConstants.BASE_URL + "/api/authenticate", { usernameOrEmail: username, password: password }).then(user => {
       handleLoggedInCallback(user.id);
     }).catch(e => {
     });
@@ -52,4 +53,3 @@ const LogInScreen = ({fetchWrapper, handleLoggedInCallback}) => {
 }
 
 export default LogInScreen;
-

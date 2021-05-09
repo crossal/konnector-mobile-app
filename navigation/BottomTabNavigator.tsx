@@ -16,7 +16,7 @@ const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
 
-const BottomTabNavigator = ({fetchWrapper, userId}) => {
+const BottomTabNavigator = ({fetchWrapper, userId, handleLogoutCallback}) => {
   const colorScheme = useColorScheme();
 
   return (
@@ -24,21 +24,21 @@ const BottomTabNavigator = ({fetchWrapper, userId}) => {
       initialRouteName="ProfileTab"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
       <BottomTab.Screen
-        name="ProfileTab"
-        children={()=><ProfileTabNavigator fetchWrapper={fetchWrapper} userId={userId}/>}
+        name="Profile"
+        children={()=><ProfileTabNavigator fetchWrapper={fetchWrapper} userId={userId} handleLogoutCallback={handleLogoutCallback}/>}
         options={{
           tabBarIcon: ({ color }) => <FontAwesome5 name="user-alt" size={24} color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="ConnectionsTab"
+        name="Connections"
         component={ConnectionsTabNavigator}
         options={{
           tabBarIcon: ({ color }) => <FontAwesome5 name="user-friends" size={24} color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="NotificationsTab"
+        name="Notifications"
         component={NotificationsTabNavigator}
         options={{
           tabBarIcon: ({ color }) => <Ionicons name="notifications" size={24} color={color} />,
@@ -54,12 +54,12 @@ export default BottomTabNavigator;
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 const ProfileTabStack = createStackNavigator<ProfileTabParamList>();
 
-const ProfileTabNavigator = ({fetchWrapper, userId}) => {
+const ProfileTabNavigator = ({fetchWrapper, userId, handleLogoutCallback}) => {
   return (
     <ProfileTabStack.Navigator>
       <ProfileTabStack.Screen
         name="ProfileScreen"
-        children={()=><ProfileScreen fetchWrapper={fetchWrapper} userId={userId}/>}
+        children={()=><ProfileScreen fetchWrapper={fetchWrapper} userId={userId} handleLogoutCallback={handleLogoutCallback}/>}
         options={{ headerTitle: 'Profile' }}
       />
     </ProfileTabStack.Navigator>

@@ -14,6 +14,13 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     padding: 20
   },
+  scrollView: {
+    flex: 1,
+    width: "100%"
+  },
+  scrollViewContent: {
+
+  },
   containerInnerLeft: {
 
   },
@@ -27,19 +34,22 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   input: {
-    height: 40,
+    alignSelf: 'stretch',
+    height: 50,
     marginBottom: 10,
     borderWidth: 1,
     borderRadius: 5,
-    padding: 10,
+    padding: 15,
     borderColor: 'gray',
     textAlign: 'left'
   },
   button: {
+    alignSelf: 'flex-start',
     alignItems: "center",
     backgroundColor: primaryColour,
-    padding: 10,
-    borderRadius: 5
+    padding: 15,
+    borderRadius: 5,
+    marginBottom: 10
   },
   buttonLabel: {
     textAlign: 'left'
