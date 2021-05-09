@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20
   },
   containerLeft: {
     flex: 1,
@@ -43,6 +44,16 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     textAlign: 'left'
   },
+  centredInput: {
+    width: 250,
+    height: 50,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 15,
+    borderColor: 'gray',
+    textAlign: 'left'
+  },
   button: {
     alignSelf: 'flex-start',
     alignItems: "center",
@@ -56,6 +67,17 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white'
+  },
+  formErrorText: {
+    textAlign: 'left',
+    color: 'red',
+    marginBottom: 10
+  },
+  centredFormErrorText: {
+    width: 250,
+    textAlign: 'left',
+    color: 'red',
+    marginBottom: 10
   }
 });
 

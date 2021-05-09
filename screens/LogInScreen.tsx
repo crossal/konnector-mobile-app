@@ -10,12 +10,28 @@ import * as apiConstants from '../constants/API.ts';
 const LogInScreen = ({fetchWrapper, handleLoggedInCallback}) => {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [formError, setFormError] = React.useState(null);
 
   const handleLogin = () => {
     fetchWrapper.post(apiConstants.BASE_URL + "/api/authenticate", { usernameOrEmail: username, password: password }).then(user => {
       handleLoggedInCallback(user.id);
     }).catch(e => {
+      setFormError("Username or password is incorrect.")
     });
+  }
+
+  const validateForm = () => {
+
+  }
+
+  const onChangeUsername = (changedUsername) => {
+    setFormError(null);
+    setUsername(changedUsername);
+  }
+
+  const onChangePassword = (changedPassword) => {
+    setFormError(null);
+    setPassword(changedPassword);
   }
 
   return (
@@ -23,12 +39,10 @@ const LogInScreen = ({fetchWrapper, handleLoggedInCallback}) => {
       <View style={styles.containerInnerLeft}>
         <Text style={styles.buttonLabel}>Username</Text>
         <TextInput
-          label="Some label"
-          theme={{colors: {primary: 'red'}}}
           placeholder="Username"
           value={username}
-          onChangeText={setUsername}
-          style={styles.input}
+          onChangeText={onChangeUsername}
+          style={styles.centredInput}
           autoCapitalize="none"
           textAlign="left"
           textContentType="username"
@@ -37,13 +51,14 @@ const LogInScreen = ({fetchWrapper, handleLoggedInCallback}) => {
         <TextInput
           placeholder="Password"
           value={password}
-          onChangeText={setPassword}
+          onChangeText={onChangePassword}
           secureTextEntry
-          style={styles.input}
+          style={styles.centredInput}
           autoCapitalize="none"
           textAlign="left"
           textContentType="password"
         />
+        { formError != null ? <Text style={styles.centredFormErrorText}>{formError}</Text> : <View/> }
         <TouchableOpacity style={styles.button} onPress={() => handleLogin()}>
           <Text style={styles.buttonText}>Log in</Text>
         </TouchableOpacity>
