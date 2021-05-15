@@ -10,6 +10,20 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback}) => {
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = React.useState({});
 
+  const emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  const [emailError, setEmailError] = React.useState(null);
+
+  const [usernameError, setUsernameError] = React.useState(null);
+
+  const [firstNameError, setFirstNameError] = React.useState(null);
+
+  const [lastNameError, setLastNameError] = React.useState(null);
+
+  const [passwordError, setPasswordError] = React.useState(null);
+
+  const [newPasswordError, setNewPasswordError] = React.useState(null);
+
   useEffect(() => {
     fetchWrapper.get(apiConstants.BASE_URL + "/api/users/" + userId).then(user => {
       setUser(user);
@@ -35,41 +49,46 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback}) => {
         <ScrollView style={styles.scrollView}>
           <Text style={styles.buttonLabel}>Email</Text>
           <TextInput
-            label="Some label"
             value={user.email}
             placeholder={'Email'}
             style={styles.input}
           />
+          { emailError != null ? <Text style={styles.formErrorText}>{emailError}</Text> : <View/> }
           <Text style={styles.buttonLabel}>Username</Text>
           <TextInput
             value={user.username}
             placeholder={'Username'}
             style={styles.input}
           />
+          { usernameError != null ? <Text style={styles.formErrorText}>{usernameError}</Text> : <View/> }
           <Text style={styles.buttonLabel}>Password</Text>
           <TextInput
             value={user.password}
             placeholder={'Password'}
             style={styles.input}
           />
+          { passwordError != null ? <Text style={styles.formErrorText}>{passwordError}</Text> : <View/> }
           <Text style={styles.buttonLabel}>New Password</Text>
           <TextInput
             value={user.newPassword}
             placeholder={'New Password'}
             style={styles.input}
           />
+          { newPasswordError != null ? <Text style={styles.formErrorText}>{newPasswordError}</Text> : <View/> }
           <Text style={styles.buttonLabel}>First Name</Text>
           <TextInput
             value={user.firstName}
             placeholder={'First name'}
             style={styles.input}
           />
+          { firstNameError != null ? <Text style={styles.formErrorText}>{firstNameError}</Text> : <View/> }
           <Text style={styles.buttonLabel}>Last Name</Text>
           <TextInput
             value={user.lastName}
             placeholder={'Last name'}
             style={styles.input}
           />
+          { lastNameError != null ? <Text style={styles.formErrorText}>{lastNameError}</Text> : <View/> }
           <TouchableOpacity style={styles.button} onPress={() => handleSave()}>
             <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>

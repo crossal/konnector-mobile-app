@@ -7,7 +7,9 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from '../types';
 import BottomTabNavigator from './BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
+import LogInSignUpScreen from '../screens/LogInSignUpScreen';
 import LogInScreen from '../screens/LogInScreen';
+import SignUpScreen from '../screens/SignUpScreen';
 import SplashScreen from '../screens/SplashScreen';
 import FetchWrapper from '../utils/fetchWrapper.tsx';
 
@@ -31,6 +33,8 @@ function RootNavigator() {
 
   const [dataLoaded, isDateLoaded] = React.useState(true);
   const [userId, setUserId] = React.useState(null);
+  const [loggingIn, setLoggingIn] = React.useState(false);
+  const [signingUp, setSigningUp] = React.useState(false);
   const [loggingOut, setLoggingOut] = React.useState(false);
 
   const handleUnauth = () => {
@@ -38,6 +42,22 @@ function RootNavigator() {
   }
 
   const fetchWrapper = new FetchWrapper(handleUnauth);
+
+  const handleLogIn = (navigation) => {
+    navigation.navigate('LogIn')
+    setLoggingIn(true);
+    setSigningUp(false);
+  }
+
+  const handleSignUp = (navigation) => {
+    navigation.navigate('SignUp')
+    setSigningUp(true);
+    setLoggingIn(false);
+  }
+
+  const handleSignedUp = (navigation) => {
+    navigation.navigate('AccountVerification')
+  }
 
   const handleLoggedIn = (userId) => {
     setUserId(userId);
@@ -48,19 +68,30 @@ function RootNavigator() {
   }
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: userId == null && (loggingIn == true || signingUp == true) ? true : false }}>
       {!dataLoaded ? (
         // We haven't finished checking for the token yet
         <Stack.Screen name="Splash" component={SplashScreen} />
       ) : userId == null ? (
-        // No token found, user isn't signed in
-        <Stack.Screen name="LogIn" children={()=><LogInScreen fetchWrapper={fetchWrapper} handleLoggedInCallback={handleLoggedIn}/>}
-          options={{
-            title: 'Log in',
-            // When logging out, a pop animation feels intuitive
-            animationTypeForReplace: loggingOut ? 'pop' : 'push',
-          }}
-        />
+        // No token found, user should log in or sign up
+        <>
+          <Stack.Screen name="LogInSignUp" children={()=><LogInSignUpScreen handleLogIn={handleLogIn} handleSignUp={handleSignUp}/>}
+            options={{
+              headerShown: false,
+              title: 'Log in & Sign up'
+            }}
+          />
+          <Stack.Screen name="LogIn" children={()=><LogInScreen fetchWrapper={fetchWrapper} handleLoggedInCallback={handleLoggedIn}/>}
+            options={{
+              title: 'Log in'
+            }}
+          />
+          <Stack.Screen name="SignUp" children={()=><SignUpScreen fetchWrapper={fetchWrapper} handleSignedUpCallback={handleSignedUp}/>}
+            options={{
+              title: 'Sign up'
+            }}
+          />
+        </>
       ) : (
         // User is signed in
         <>

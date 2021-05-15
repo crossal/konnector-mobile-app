@@ -55,6 +55,13 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   },
   button: {
+    alignItems: "center",
+    backgroundColor: primaryColour,
+    padding: 15,
+    borderRadius: 5,
+    marginBottom: 10
+  },
+  buttonLeft: {
     alignSelf: 'flex-start',
     alignItems: "center",
     backgroundColor: primaryColour,
