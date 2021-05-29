@@ -6,8 +6,11 @@ import { Text, View } from '../components/Themed';
 import { TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { styles } from '../constants/Style.ts'
 import * as apiConstants from '../constants/API.ts';
+import { useNavigation } from '@react-navigation/native';
 
 const SignUpScreen = ({fetchWrapper, handleSignedUpCallback}) => {
+
+  const navigation = useNavigation();
 
   const emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -17,7 +20,7 @@ const SignUpScreen = ({fetchWrapper, handleSignedUpCallback}) => {
   const [username, setUsername] = React.useState('');
   const [usernameError, setUsernameError] = React.useState(null);
 
-  const [firstName, setfirstName] = React.useState('');
+  const [firstName, setFirstName] = React.useState('');
   const [firstNameError, setFirstNameError] = React.useState(null);
 
   const [lastName, setLastName] = React.useState('');
@@ -32,49 +35,65 @@ const SignUpScreen = ({fetchWrapper, handleSignedUpCallback}) => {
   const [formError, setFormError] = React.useState(null);
 
   const handleSignUp = () => {
-    fetchWrapper.post(apiConstants.BASE_URL + "/api/users", { email: email, username: username, firstName: firstName, lastName: lastName, password: password }).then(user => {
-      handleSignedUpCallback();
-    }).catch(e => {
-      setFormError("Username or password is incorrect.")
-    });
+    var validForm = validateForm();
+    if (validForm) {
+      fetchWrapper.post(apiConstants.BASE_URL + "/api/users", { email: email, username: username, firstName: firstName, lastName: lastName, password: password }).then(user => {
+        handleSignedUpCallback(navigation);
+      }).catch(e => {
+        setFormError(e.data.error)
+      });
+    }
   }
 
   const validateForm = () => {
+    var validForm = true;
+
     if (email == null || email == '') {
+      validForm = false;
       setEmailError('Cannot be empty');
     }
 
     if (!emailPattern.test(email)) {
+      validForm = false;
       setEmailError('Invalid email address');
     }
 
     if (username == null || username == '') {
+      validForm = false;
       setUsernameError('Cannot be empty');
     }
 
     if (firstName == null || firstName == '') {
+      validForm = false;
       setFirstNameError('Cannot be empty');
     }
 
     if (lastName == null || lastName == '') {
+      validForm = false;
       setLastNameError('Cannot be empty');
     }
 
     if (email == null || email == '') {
+      validForm = false;
       setEmailError('Cannot be empty');
     }
 
     if (email == null || email == '') {
+      validForm = false;
       setEmailError('Cannot be empty');
     }
 
     if (password == null || password == '' || password.length < 8) {
+      validForm = false;
       setPasswordError('Password must be greater than 8 characters');
     }
 
     if (passwordConfirmation != password) {
+      validForm = false;
       setPasswordConfirmationError('Passwords do not match');
     }
+
+    return validForm;
   }
 
   const onChangeEmail = (changedEmail) => {
@@ -118,10 +137,10 @@ const SignUpScreen = ({fetchWrapper, handleSignedUpCallback}) => {
       <ScrollView style={styles.scrollView}>
         <Text style={styles.buttonLabel}>Email</Text>
         <TextInput
-          placeholder="email"
+          placeholder="Email"
           value={email}
           onChangeText={onChangeEmail}
-          style={styles.input}
+          style={ emailError == null ? styles.input : styles.inputWithError }
           autoCapitalize="none"
           textAlign="left"
           textContentType="emailAddress"
@@ -129,10 +148,10 @@ const SignUpScreen = ({fetchWrapper, handleSignedUpCallback}) => {
         { emailError != null ? <Text style={styles.formErrorText}>{emailError}</Text> : <View/> }
         <Text style={styles.buttonLabel}>Username</Text>
         <TextInput
-          placeholder="username"
+          placeholder="Username"
           value={username}
           onChangeText={onChangeUsername}
-          style={styles.input}
+          style={ usernameError == null ? styles.input : styles.inputWithError }
           autoCapitalize="none"
           textAlign="left"
           textContentType="username"
@@ -143,7 +162,7 @@ const SignUpScreen = ({fetchWrapper, handleSignedUpCallback}) => {
           placeholder="First name"
           value={firstName}
           onChangeText={onChangeFirstName}
-          style={styles.input}
+          style={ firstNameError == null ? styles.input : styles.inputWithError }
           textAlign="left"
           textContentType="givenName"
         />
@@ -153,7 +172,7 @@ const SignUpScreen = ({fetchWrapper, handleSignedUpCallback}) => {
           placeholder="Last name"
           value={lastName}
           onChangeText={onChangeLastName}
-          style={styles.input}
+          style={ lastNameError == null ? styles.input : styles.inputWithError }
           textAlign="left"
           textContentType="familyName"
         />
@@ -164,7 +183,7 @@ const SignUpScreen = ({fetchWrapper, handleSignedUpCallback}) => {
           value={password}
           onChangeText={onChangePassword}
           secureTextEntry
-          style={styles.input}
+          style={ passwordError == null ? styles.input : styles.inputWithError }
           autoCapitalize="none"
           textAlign="left"
           textContentType="password"
@@ -176,13 +195,13 @@ const SignUpScreen = ({fetchWrapper, handleSignedUpCallback}) => {
           value={passwordConfirmation}
           onChangeText={onChangePasswordConfirmation}
           secureTextEntry
-          style={styles.input}
+          style={ passwordConfirmationError == null ? styles.input : styles.inputWithError }
           autoCapitalize="none"
           textAlign="left"
           textContentType="password"
         />
         { passwordConfirmationError != null ? <Text style={styles.formErrorText}>{passwordConfirmationError}</Text> : <View/> }
-        { formError != null ? <Text style={styles.ormErrorText}>{formError}</Text> : <View/> }
+        { formError != null ? <Text style={styles.formErrorText}>{formError}</Text> : <View/> }
         <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>

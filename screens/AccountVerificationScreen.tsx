@@ -3,27 +3,30 @@ import { StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import { TouchableOpacity, TextInput } from 'react-native';
+import { TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { styles } from '../constants/Style.ts'
 import * as apiConstants from '../constants/API.ts';
+import { useNavigation } from '@react-navigation/native';
 
-const LogInScreen = ({fetchWrapper, handleLoggedInCallback}) => {
+const AccountVerificationScreen = ({fetchWrapper, handleAccountVerifiedCallback}) => {
+
+  const navigation = useNavigation();
 
   const [usernameOrEmail, setUsernameOrEmail] = React.useState('');
   const [usernameOrEmailError, setUsernameOrEmailError] = React.useState(null);
 
-  const [password, setPassword] = React.useState('');
-  const [passwordError, setPasswordError] = React.useState(null);
+  const [code, setCode] = React.useState('');
+  const [codeError, setCodeError] = React.useState(null);
 
   const [formError, setFormError] = React.useState(null);
 
-  const handleLogin = () => {
-    var validForm = validateForm();
+  const handleVerify = () => {
+    var validForm = validateForm(navigation);
     if (validForm) {
-      fetchWrapper.post(apiConstants.BASE_URL + "/api/authenticate", { usernameOrEmail: usernameOrEmail, password: password }).then(user => {
-        handleLoggedInCallback(user.id);
+      fetchWrapper.post(apiConstants.BASE_URL + "/api/verifications/verify?type=0", { usernameOrEmail: usernameOrEmail, code: code }).then(response => {
+        handleAccountVerifiedCallback(navigation);
       }).catch(e => {
-        setFormError("Username/email or password is incorrect.")
+        setFormError(e.data.error)
       });
     }
   }
@@ -36,9 +39,9 @@ const LogInScreen = ({fetchWrapper, handleLoggedInCallback}) => {
       setUsernameOrEmailError('Cannot be empty');
     }
 
-    if (password == null || password == '') {
+    if (code == null || code == '') {
       validForm = false;
-      setPasswordError('Cannot be empty');
+      setCodeError('Cannot be empty');
     }
 
     return validForm;
@@ -50,10 +53,10 @@ const LogInScreen = ({fetchWrapper, handleLoggedInCallback}) => {
     setUsernameOrEmail(changedUsernameOrEmail);
   }
 
-  const onChangePassword = (changedPassword) => {
+  const onChangeCode = (changedCode) => {
     setFormError(null);
-    setPasswordError(null);
-    setPassword(changedPassword);
+    setCodeError(null);
+    setCode(changedCode);
   }
 
   return (
@@ -69,26 +72,25 @@ const LogInScreen = ({fetchWrapper, handleLoggedInCallback}) => {
           textAlign="left"
           textContentType="emailAddress"
         />
-        { usernameOrEmailError != null ? <Text style={styles.formErrorText}>{usernameOrEmailError}</Text> : <View/> }
-        <Text style={styles.baseText}>Password</Text>
+        { usernameOrEmailError != null ? <Text style={styles.formErrorText}>{codeError}</Text> : <View/> }
+        <Text style={styles.buttonLabel}>Code</Text>
         <TextInput
-          placeholder="Password"
-          value={password}
-          onChangeText={onChangePassword}
-          secureTextEntry
-          style={ passwordError == null ? styles.input : styles.inputWithError }
+          placeholder="Code"
+          value={code}
+          onChangeText={onChangeCode}
+          style={ codeError == null ? styles.input : styles.inputWithError }
           autoCapitalize="none"
           textAlign="left"
-          textContentType="password"
+          textContentType="oneTimeCode"
         />
-        { passwordError != null ? <Text style={styles.formErrorText}>{passwordError}</Text> : <View/> }
-        { formError != null ? <Text style={styles.centredFormErrorText}>{formError}</Text> : <View/> }
-        <TouchableOpacity style={styles.button} onPress={() => handleLogin()}>
-          <Text style={styles.buttonText}>Log in</Text>
+        { codeError != null ? <Text style={styles.formErrorText}>{codeError}</Text> : <View/> }
+        { formError != null ? <Text style={styles.formErrorText}>{formError}</Text> : <View/> }
+        <TouchableOpacity style={styles.button} onPress={() => handleVerify()}>
+          <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 }
 
-export default LogInScreen;
+export default AccountVerificationScreen;

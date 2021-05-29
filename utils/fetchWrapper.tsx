@@ -45,13 +45,14 @@ class FetchWrapper {
       if (!response.ok) {
         const error = (data && data.message) || response.statusText;
 
-        console.log("FetchWrapper invalid response, status: " + response.status + ", error: " + error);
+        response.data = data;
+        console.log("FetchWrapper invalid response: " + JSON.stringify(response));
 
         if (response.status == 401) {
          this.handleUnauthCallback();
         }
 
-        return Promise.reject(error);
+        return Promise.reject(response);
       }
 
       return data;

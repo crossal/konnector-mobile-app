@@ -10,6 +10,7 @@ import LinkingConfiguration from './LinkingConfiguration';
 import LogInSignUpScreen from '../screens/LogInSignUpScreen';
 import LogInScreen from '../screens/LogInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
+import AccountVerificationScreen from '../screens/AccountVerificationScreen';
 import SplashScreen from '../screens/SplashScreen';
 import FetchWrapper from '../utils/fetchWrapper.tsx';
 
@@ -44,23 +45,27 @@ function RootNavigator() {
   const fetchWrapper = new FetchWrapper(handleUnauth);
 
   const handleLogIn = (navigation) => {
-    navigation.navigate('LogIn')
+    navigation.push('LogIn')
     setLoggingIn(true);
     setSigningUp(false);
   }
 
   const handleSignUp = (navigation) => {
-    navigation.navigate('SignUp')
+    navigation.push('SignUp')
     setSigningUp(true);
     setLoggingIn(false);
   }
 
   const handleSignedUp = (navigation) => {
-    navigation.navigate('AccountVerification')
+    navigation.push('AccountVerification')
   }
 
   const handleLoggedIn = (userId) => {
     setUserId(userId);
+  }
+
+  const handleAccountVerified = (navigation) => {
+    navigation.popToTop();
   }
 
   const handleLogout = () => {
@@ -89,6 +94,11 @@ function RootNavigator() {
           <Stack.Screen name="SignUp" children={()=><SignUpScreen fetchWrapper={fetchWrapper} handleSignedUpCallback={handleSignedUp}/>}
             options={{
               title: 'Sign up'
+            }}
+          />
+          <Stack.Screen name="AccountVerification" children={()=><AccountVerificationScreen fetchWrapper={fetchWrapper} handleAccountVerifiedCallback={handleAccountVerified}/>}
+            options={{
+              title: 'Account Verification'
             }}
           />
         </>

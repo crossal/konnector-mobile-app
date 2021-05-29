@@ -44,6 +44,16 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     textAlign: 'left'
   },
+  inputWithError: {
+    alignSelf: 'stretch',
+    height: 50,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 15,
+    borderColor: 'red',
+    textAlign: 'left'
+  },
   centredInput: {
     width: 250,
     height: 50,
