@@ -3,11 +3,11 @@ import { TouchableOpacity, TextInput, ActivityIndicator, StyleSheet, ScrollView 
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import { styles } from '../constants/Style.ts'
+import { styles, colours } from '../constants/Style.ts'
 import * as apiConstants from '../constants/API.ts';
 
 const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback}) => {
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = React.useState(true);
   const [user, setUser] = React.useState({});
 
   const emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -45,13 +45,14 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback}) => {
 
   return (
     <View style={styles.containerLeft}>
-      {isLoading ? <ActivityIndicator size="large" color="#0000ff"/> : (
+      {isLoading ? <ActivityIndicator size="large" color={colours.primary}/> : (
         <ScrollView style={styles.scrollView}>
           <Text style={styles.buttonLabel}>Email</Text>
           <TextInput
             value={user.email}
             placeholder={'Email'}
             style={styles.input}
+            editable = {false}
           />
           { emailError != null ? <Text style={styles.formErrorText}>{emailError}</Text> : <View/> }
           <Text style={styles.buttonLabel}>Username</Text>
@@ -59,6 +60,7 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback}) => {
             value={user.username}
             placeholder={'Username'}
             style={styles.input}
+            editable = {false}
           />
           { usernameError != null ? <Text style={styles.formErrorText}>{usernameError}</Text> : <View/> }
           <Text style={styles.buttonLabel}>Password</Text>

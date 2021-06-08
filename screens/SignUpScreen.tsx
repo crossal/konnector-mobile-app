@@ -8,11 +8,12 @@ import { styles } from '../constants/Style.ts'
 import * as apiConstants from '../constants/API.ts';
 import { useNavigation } from '@react-navigation/native';
 
-const SignUpScreen = ({fetchWrapper, handleSignedUpCallback}) => {
+const SignUpScreen = ({fetchWrapper, handleSignedUpCallback, handleLoading}) => {
 
   const navigation = useNavigation();
 
   const emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const usernamePattern = /^[a-zA-Z0-9._]+$/;
 
   const [email, setEmail] = React.useState('');
   const [emailError, setEmailError] = React.useState(null);
@@ -34,12 +35,17 @@ const SignUpScreen = ({fetchWrapper, handleSignedUpCallback}) => {
 
   const [formError, setFormError] = React.useState(null);
 
+  const minPasswordLength = 8;
+
   const handleSignUp = () => {
     var validForm = validateForm();
     if (validForm) {
+      handleLoading(true);
       fetchWrapper.post(apiConstants.BASE_URL + "/api/users", { email: email, username: username, firstName: firstName, lastName: lastName, password: password }).then(user => {
+        handleLoading(false);
         handleSignedUpCallback(navigation);
       }).catch(e => {
+        handleLoading(false);
         setFormError(e.data.error)
       });
     }
@@ -50,47 +56,50 @@ const SignUpScreen = ({fetchWrapper, handleSignedUpCallback}) => {
 
     if (email == null || email == '') {
       validForm = false;
-      setEmailError('Cannot be empty');
+      setEmailError('Cannot be empty.');
     }
 
     if (!emailPattern.test(email)) {
       validForm = false;
-      setEmailError('Invalid email address');
+      setEmailError('Invalid email address.');
     }
 
     if (username == null || username == '') {
       validForm = false;
-      setUsernameError('Cannot be empty');
+      setUsernameError('Cannot be empty.');
+    } else if (!usernamePattern.test(username)) {
+      validForm = false;
+      setUsernameError('Invalid username.');
     }
 
     if (firstName == null || firstName == '') {
       validForm = false;
-      setFirstNameError('Cannot be empty');
+      setFirstNameError('Cannot be empty.');
     }
 
     if (lastName == null || lastName == '') {
       validForm = false;
-      setLastNameError('Cannot be empty');
+      setLastNameError('Cannot be empty.');
     }
 
     if (email == null || email == '') {
       validForm = false;
-      setEmailError('Cannot be empty');
+      setEmailError('Cannot be empty.');
     }
 
     if (email == null || email == '') {
       validForm = false;
-      setEmailError('Cannot be empty');
+      setEmailError('Cannot be empty.');
     }
 
-    if (password == null || password == '' || password.length < 8) {
+    if (password == null || password.length < minPasswordLength) {
       validForm = false;
-      setPasswordError('Password must be greater than 8 characters');
+      setPasswordError('Password must be greater than ' + (minPasswordLength - 1) + ' characters.');
     }
 
     if (passwordConfirmation != password) {
       validForm = false;
-      setPasswordConfirmationError('Passwords do not match');
+      setPasswordConfirmationError('Passwords do not match.');
     }
 
     return validForm;

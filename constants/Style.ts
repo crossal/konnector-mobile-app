@@ -1,8 +1,20 @@
 import { StyleSheet } from 'react-native';
 
-const primaryColour = "#2ECC71";
+const colours = {
+  primary: "#2ECC71"
+}
 
 const styles = StyleSheet.create({
+  loadingOverlay: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.3)'
+  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -66,7 +78,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    backgroundColor: primaryColour,
+    backgroundColor: colours.primary,
     padding: 15,
     borderRadius: 5,
     marginBottom: 10
@@ -74,7 +86,7 @@ const styles = StyleSheet.create({
   buttonLeft: {
     alignSelf: 'flex-start',
     alignItems: "center",
-    backgroundColor: primaryColour,
+    backgroundColor: colours.primary,
     padding: 15,
     borderRadius: 5,
     marginBottom: 10
@@ -98,4 +110,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export { styles };
+export { styles, colours };

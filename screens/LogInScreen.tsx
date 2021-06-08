@@ -4,10 +4,10 @@ import { StyleSheet } from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { TouchableOpacity, TextInput } from 'react-native';
-import { styles } from '../constants/Style.ts'
+import { styles } from '../constants/Style.ts';
 import * as apiConstants from '../constants/API.ts';
 
-const LogInScreen = ({fetchWrapper, handleLoggedInCallback}) => {
+const LogInScreen = ({fetchWrapper, handleLoggedInCallback, handleLoading}) => {
 
   const [usernameOrEmail, setUsernameOrEmail] = React.useState('');
   const [usernameOrEmailError, setUsernameOrEmailError] = React.useState(null);
@@ -20,9 +20,12 @@ const LogInScreen = ({fetchWrapper, handleLoggedInCallback}) => {
   const handleLogin = () => {
     var validForm = validateForm();
     if (validForm) {
+      handleLoading(true);
       fetchWrapper.post(apiConstants.BASE_URL + "/api/authenticate", { usernameOrEmail: usernameOrEmail, password: password }).then(user => {
+        handleLoading(false);
         handleLoggedInCallback(user.id);
       }).catch(e => {
+        handleLoading(false);
         setFormError("Username/email or password is incorrect.")
       });
     }
@@ -33,12 +36,12 @@ const LogInScreen = ({fetchWrapper, handleLoggedInCallback}) => {
 
     if (usernameOrEmail == null || usernameOrEmail == '') {
       validForm = false;
-      setUsernameOrEmailError('Cannot be empty');
+      setUsernameOrEmailError('Cannot be empty.');
     }
 
     if (password == null || password == '') {
       validForm = false;
-      setPasswordError('Cannot be empty');
+      setPasswordError('Cannot be empty.');
     }
 
     return validForm;

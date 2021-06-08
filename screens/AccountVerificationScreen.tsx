@@ -8,7 +8,7 @@ import { styles } from '../constants/Style.ts'
 import * as apiConstants from '../constants/API.ts';
 import { useNavigation } from '@react-navigation/native';
 
-const AccountVerificationScreen = ({fetchWrapper, handleAccountVerifiedCallback}) => {
+const AccountVerificationScreen = ({fetchWrapper, handleAccountVerifiedCallback, handleLoading}) => {
 
   const navigation = useNavigation();
 
@@ -23,9 +23,12 @@ const AccountVerificationScreen = ({fetchWrapper, handleAccountVerifiedCallback}
   const handleVerify = () => {
     var validForm = validateForm(navigation);
     if (validForm) {
+      handleLoading(true);
       fetchWrapper.post(apiConstants.BASE_URL + "/api/verifications/verify?type=0", { usernameOrEmail: usernameOrEmail, code: code }).then(response => {
+        handleLoading(false);
         handleAccountVerifiedCallback(navigation);
       }).catch(e => {
+        handleLoading(false);
         setFormError(e.data.error)
       });
     }
