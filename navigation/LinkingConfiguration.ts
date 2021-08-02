@@ -6,16 +6,21 @@ export default {
     screens: {
       Root: {
         screens: {
-          TabOne: {
+          ProfileTab: {
             screens: {
-              TabOneScreen: 'one',
+              ProfileScreen: 'profile',
             },
           },
-          TabTwo: {
+          ConnectionsTab: {
             screens: {
-              TabTwoScreen: 'two',
+              ConnectionsScreen: 'connections',
             },
           },
+          NotificationsTab: {
+            screens: {
+              NotificationsScreen: 'notifications',
+            },
+          }
         },
       },
       NotFound: '*',
