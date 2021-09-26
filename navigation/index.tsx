@@ -114,7 +114,7 @@ function RootNavigator() {
         ) : (
           // User is signed in
           <>
-            <Stack.Screen name="Root" children={()=><BottomTabNavigator fetchWrapper={fetchWrapper} userId={userId} handleLogoutCallback={handleLogout}/>} />
+            <Stack.Screen name="Root" children={()=><BottomTabNavigator fetchWrapper={fetchWrapper} userId={userId} handleLogoutCallback={handleLogout} handleLoading={handleLoading}/>} />
             <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
           </>
         )}

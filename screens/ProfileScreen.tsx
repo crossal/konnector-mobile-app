@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, TextInput, ActivityIndicator, StyleSheet, ScrollView } from 'react-native';
+import { TouchableOpacity, TextInput, ActivityIndicator, StyleSheet, ScrollView, ToastAndroid, Platform, AlertIOS } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { styles, colours } from '../constants/Style.ts'
 import * as apiConstants from '../constants/API.ts';
 
-const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback}) => {
+const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback, handleLoading}) => {
   const [isLoading, setLoading] = React.useState(true);
   const [user, setUser] = React.useState({});
 
@@ -20,9 +20,11 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback}) => {
 
   const [lastNameError, setLastNameError] = React.useState(null);
 
+  const [oldPasswordError, setOldPasswordError] = React.useState(null);
+
   const [passwordError, setPasswordError] = React.useState(null);
 
-  const [newPasswordError, setNewPasswordError] = React.useState(null);
+  const [formError, setFormError] = React.useState(null);
 
   useEffect(() => {
     fetchWrapper.get(apiConstants.BASE_URL + "/api/users/" + userId).then(user => {
@@ -33,14 +35,80 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback}) => {
   }, []);
 
   const handleSave = () => {
-//     fetchWrapper.post("http://192.168.43.100:8080/api/authenticate", { usernameOrEmail: username, password: password }).then(user => {
-//       handleLoggedIn(user.id);
-//     }).catch(e => {
-//     });
+    var validForm = validateForm();
+    if (validForm) {
+      handleLoading(true);
+      fetchWrapper.put(apiConstants.BASE_URL + "/api/users/" + userId, user).then(user => {
+        handleLoading(false);
+        handleUserUpdated();
+      }).catch(e => {
+        handleLoading(false);
+        setFormError(e.data.error)
+      });
+    }
+  }
+
+  const validateForm = () => {
+    var validForm = true;
+
+    if (user.firstName == null || user.firstName == '') {
+      validForm = false;
+      setFirstNameError('Cannot be empty.');
+    }
+
+    if (user.lastName == null || user.lastName == '') {
+      validForm = false;
+      setLastNameError('Cannot be empty.');
+    }
+
+    if (user.password != null && user.password.length > 0 && (user.oldPassword == null || user.oldPassword.length == 0)) {
+      validForm = false;
+      setOldPasswordError('Password cannot be empty when setting new password.');
+    }
+
+    if (user.password != null && user.password.length > 0 && user.password.length < apiConstants.MIN_PASSWORD_LENGTH) {
+      validForm = false;
+      setPasswordError('Password must be greater than ' + (apiConstants.MIN_PASSWORD_LENGTH - 1) + ' characters.');
+    }
+
+    return validForm;
+  }
+
+  const handleUserUpdated = () => {
+    const userUpdatedMessage = "User updated.";
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(userUpdatedMessage, ToastAndroid.SHORT)
+    } else {
+      AlertIOS.alert(userUpdatedMessage);
+    }
   }
 
   const handleLogout = () => {
     handleLogoutCallback();
+  }
+
+  const onChangeOldPassword = (changedOldPassword) => {
+    setFormError(null);
+    setOldPasswordError(null);
+    setUser({...user, oldPassword: changedOldPassword});
+  }
+
+  const onChangePassword = (changedPassword) => {
+    setFormError(null);
+    setPasswordError(null);
+    setUser({...user, password: changedPassword});
+  }
+
+  const onChangeFirstName = (changedFirstName) => {
+    setFormError(null);
+    setFirstNameError(null);
+    setUser({...user, firstName: changedFirstName});
+  }
+
+  const onChangeLastName = (changedLastName) => {
+    setFormError(null);
+    setLastNameError(null);
+    setUser({...user, lastName: changedLastName});
   }
 
   return (
@@ -52,7 +120,7 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback}) => {
             value={user.email}
             placeholder={'Email'}
             style={styles.input}
-            editable = {false}
+            editable={false}
           />
           { emailError != null ? <Text style={styles.formErrorText}>{emailError}</Text> : <View/> }
           <Text style={styles.buttonLabel}>Username</Text>
@@ -60,37 +128,50 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback}) => {
             value={user.username}
             placeholder={'Username'}
             style={styles.input}
-            editable = {false}
+            editable={false}
           />
           { usernameError != null ? <Text style={styles.formErrorText}>{usernameError}</Text> : <View/> }
           <Text style={styles.buttonLabel}>Password</Text>
           <TextInput
-            value={user.password}
+            value={user.oldPassword}
             placeholder={'Password'}
-            style={styles.input}
+            style={ oldPasswordError == null ? styles.input : styles.inputWithError }
+            onChangeText={onChangeOldPassword}
+            autoCapitalize="none"
+            textContentType="password"
+            secureTextEntry
           />
-          { passwordError != null ? <Text style={styles.formErrorText}>{passwordError}</Text> : <View/> }
+          { oldPasswordError != null ? <Text style={styles.formErrorText}>{oldPasswordError}</Text> : <View/> }
           <Text style={styles.buttonLabel}>New Password</Text>
           <TextInput
-            value={user.newPassword}
+            value={user.password}
             placeholder={'New Password'}
-            style={styles.input}
+            style={ passwordError == null ? styles.input : styles.inputWithError }
+            onChangeText={onChangePassword}
+            autoCapitalize="none"
+            textContentType="password"
+            secureTextEntry
           />
-          { newPasswordError != null ? <Text style={styles.formErrorText}>{newPasswordError}</Text> : <View/> }
+          { passwordError != null ? <Text style={styles.formErrorText}>{passwordError}</Text> : <View/> }
           <Text style={styles.buttonLabel}>First Name</Text>
           <TextInput
             value={user.firstName}
             placeholder={'First name'}
-            style={styles.input}
+            style={ firstNameError == null ? styles.input : styles.inputWithError }
+            onChangeText={onChangeFirstName}
+            textContentType="givenName"
           />
           { firstNameError != null ? <Text style={styles.formErrorText}>{firstNameError}</Text> : <View/> }
           <Text style={styles.buttonLabel}>Last Name</Text>
           <TextInput
             value={user.lastName}
             placeholder={'Last name'}
-            style={styles.input}
+            style={ lastNameError == null ? styles.input : styles.inputWithError }
+            onChangeText={onChangeLastName}
+            textContentType="familyName"
           />
           { lastNameError != null ? <Text style={styles.formErrorText}>{lastNameError}</Text> : <View/> }
+          { formError != null ? <Text style={styles.centredFormErrorText}>{formError}</Text> : <View/> }
           <TouchableOpacity style={styles.button} onPress={() => handleSave()}>
             <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>
