@@ -16,7 +16,7 @@ const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
 
-const BottomTabNavigator = ({fetchWrapper, userId, handleLogoutCallback}) => {
+const BottomTabNavigator = ({fetchWrapper, userId, handleLogoutCallback, handleLoading}) => {
   const colorScheme = useColorScheme();
 
   return (
@@ -25,7 +25,7 @@ const BottomTabNavigator = ({fetchWrapper, userId, handleLogoutCallback}) => {
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
       <BottomTab.Screen
         name="Profile"
-        children={()=><ProfileTabNavigator fetchWrapper={fetchWrapper} userId={userId} handleLogoutCallback={handleLogoutCallback}/>}
+        children={()=><ProfileTabNavigator fetchWrapper={fetchWrapper} userId={userId} handleLogoutCallback={handleLogoutCallback} handleLoading={handleLoading}/>}
         options={{
           tabBarIcon: ({ color }) => <FontAwesome5 name="user-alt" size={24} color={color} />,
         }}
@@ -54,12 +54,12 @@ export default BottomTabNavigator;
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 const ProfileTabStack = createStackNavigator<ProfileTabParamList>();
 
-const ProfileTabNavigator = ({fetchWrapper, userId, handleLogoutCallback}) => {
+const ProfileTabNavigator = ({fetchWrapper, userId, handleLogoutCallback, handleLoading}) => {
   return (
     <ProfileTabStack.Navigator>
       <ProfileTabStack.Screen
         name="ProfileScreen"
-        children={()=><ProfileScreen fetchWrapper={fetchWrapper} userId={userId} handleLogoutCallback={handleLogoutCallback}/>}
+        children={()=><ProfileScreen fetchWrapper={fetchWrapper} userId={userId} handleLogoutCallback={handleLogoutCallback} handleLoading={handleLoading}/>}
         options={{ headerTitle: 'Profile' }}
       />
     </ProfileTabStack.Navigator>

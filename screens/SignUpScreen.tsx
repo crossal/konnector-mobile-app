@@ -35,8 +35,6 @@ const SignUpScreen = ({fetchWrapper, handleSignedUpCallback, handleLoading}) => 
 
   const [formError, setFormError] = React.useState(null);
 
-  const minPasswordLength = 8;
-
   const handleSignUp = () => {
     var validForm = validateForm();
     if (validForm) {
@@ -46,7 +44,7 @@ const SignUpScreen = ({fetchWrapper, handleSignedUpCallback, handleLoading}) => 
         handleSignedUpCallback(navigation);
       }).catch(e => {
         handleLoading(false);
-        setFormError(e.data.error)
+        setFormError(e.data.error);
       });
     }
   }
@@ -92,9 +90,9 @@ const SignUpScreen = ({fetchWrapper, handleSignedUpCallback, handleLoading}) => 
       setEmailError('Cannot be empty.');
     }
 
-    if (password == null || password.length < minPasswordLength) {
+    if (password == null || password.length < apiConstants.MIN_PASSWORD_LENGTH) {
       validForm = false;
-      setPasswordError('Password must be greater than ' + (minPasswordLength - 1) + ' characters.');
+      setPasswordError('Password must be greater than ' + (apiConstants.MIN_PASSWORD_LENGTH - 1) + ' characters.');
     }
 
     if (passwordConfirmation != password) {
