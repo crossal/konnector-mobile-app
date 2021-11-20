@@ -41,10 +41,40 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  title2: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
   separator: {
     marginVertical: 30,
     height: 1,
     width: '80%',
+  },
+  pagination: {
+    flexDirection: 'row'
+  },
+  listSeparator: {
+    height: 1,
+    backgroundColor: 'gray'
+  },
+  listItemTop: {
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    borderTopWidth: 1
+  },
+  listItem: {
+    alignSelf: 'stretch',
+    padding: 15,
+    height: 50,
+    borderColor: 'gray',
+    borderBottomWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1
+  },
+  empty: {},
+  listItemBottom: {
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5
   },
   input: {
     alignSelf: 'stretch',
@@ -94,7 +124,11 @@ const styles = StyleSheet.create({
   buttonLabel: {
     textAlign: 'left'
   },
-  buttonText: {
+  text: {
+    fontSize: 16,
+    color: 'black'
+  },
+  white: {
     color: 'white'
   },
   formErrorText: {
@@ -107,6 +141,12 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: 'red',
     marginBottom: 10
+  },
+  smallSpace: {
+    margin: 10
+  },
+  smallSpaceRight: {
+    marginRight: 10
   }
 });
 

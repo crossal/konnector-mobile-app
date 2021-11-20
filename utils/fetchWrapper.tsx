@@ -39,6 +39,7 @@ class FetchWrapper {
   }
 
   handleResponse = (response) => {
+//     console.log(JSON.stringify(response));
     return response.text().then(text => {
       const data = text && JSON.parse(text);
 
@@ -49,13 +50,15 @@ class FetchWrapper {
         console.log("FetchWrapper invalid response: " + JSON.stringify(response));
 
         if (response.status == 401) {
-         this.handleUnauthCallback();
+          this.handleUnauthCallback();
         }
 
         return Promise.reject(response);
       }
 
-      return data;
+      response.data = data;
+
+      return response;
     });
   }
 }
