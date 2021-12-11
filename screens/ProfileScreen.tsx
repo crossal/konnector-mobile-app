@@ -32,6 +32,7 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback, handleLoadin
 
   const [formError, setFormError] = React.useState(null);
   const [newContactDetailFormError, setNewContactDetailFormError] = React.useState(null);
+  const [deleteContactDetailFormError, setDeleteContactDetailFormError] = React.useState(null);
 
   useEffect(() => {
     fetchWrapper.get(apiConstants.BASE_URL + "/api/users/" + userId).then(response => {
@@ -185,8 +186,21 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback, handleLoadin
     setNewContactDetailValue(changedNewContactDetailValue);
   }
 
+  const handleDeleteContactDetail = (contactDetail, index) => {
+    handleLoading(true);
+    fetchWrapper.delete(apiConstants.BASE_URL + "/api/contact-details/" + contactDetail.id).then(response => {
+      handleLoading(false);
+      let newContactDetails = [...contactDetails];
+      newContactDetails.splice(index, 1);
+      setContactDetails(newContactDetails);
+    }).catch(e => {
+      handleLoading(false);
+      setDeleteContactDetailFormError(e.data.error)
+    });
+  }
+
   return (
-    <View style={styles.containerLeft}>
+    <View style={[styles.containerLeft, styles.noPadding]}>
       {isLoading > 0 ? <ActivityIndicator size="large" color={colours.primary}/> : (
         <ScrollView style={styles.scrollView}>
           <Text style={styles.title}>Account Details</Text>
@@ -258,11 +272,16 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback, handleLoadin
             contactDetails.map((item, index, array) => {
               return (
                 <View key={index} style={[styles.listItem, index == 0 ? styles.listItemTop : styles.empty, index == array.length - 1 ? styles.listItemBottom : styles.empty]}>
-                  <Text style={styles.text} key={index}>{item.type}: {item.value}</Text>
+                  <Text style={[styles.text, styles.listText]} key={index}>{item.type}: {item.value}</Text>
+                  <TouchableOpacity style={[styles.listButton]} onPress={() => handleDeleteContactDetail(item, index)}>
+                    <FontAwesome name="remove" style={[styles.text, styles.white]} />
+                  </TouchableOpacity>
                 </View>
               );
             })
           }
+
+          { newContactDetailFormError != null ? <Text style={styles.centredFormErrorText}>{newContactDetailFormError}</Text> : <View/> }
 
           <View style={styles.smallSpace}/>
 
@@ -323,6 +342,8 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback, handleLoadin
           <TouchableOpacity style={styles.button} onPress={() => handleLogout()}>
             <Text style={[styles.text, styles.white]}>Log Out</Text>
           </TouchableOpacity>
+
+          <View style={styles.smallSpace}/>
         </ScrollView>
       )}
     </View>

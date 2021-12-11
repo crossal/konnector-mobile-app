@@ -1,7 +1,8 @@
 import { StyleSheet } from 'react-native';
 
 const colours = {
-  primary: "#2ECC71"
+  primary: "#2ECC71",
+  remove: "#E0E0E0"
 }
 
 const styles = StyleSheet.create({
@@ -27,9 +28,13 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     padding: 20
   },
+  noPadding: {
+    padding: 0
+  },
   scrollView: {
     flex: 1,
-    width: "100%"
+    width: "100%",
+    padding: 20
   },
   scrollViewContent: {
 
@@ -63,8 +68,10 @@ const styles = StyleSheet.create({
     borderTopWidth: 1
   },
   listItem: {
+    flexDirection: 'row',
     alignSelf: 'stretch',
     padding: 15,
+    alignItems: 'center',
     height: 50,
     borderColor: 'gray',
     borderBottomWidth: 1,
@@ -123,6 +130,17 @@ const styles = StyleSheet.create({
   },
   buttonLabel: {
     textAlign: 'left'
+  },
+  listButton: {
+    alignItems: "center",
+    backgroundColor: colours.remove,
+    borderRadius: 5,
+    width: 40,
+    height: 40,
+    justifyContent: 'center'
+  },
+  listText: {
+    flex: 1
   },
   text: {
     fontSize: 16,
