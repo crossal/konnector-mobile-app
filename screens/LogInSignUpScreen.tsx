@@ -23,10 +23,10 @@ const LogInSignUpScreen = ({handleLogIn, handleSignUp}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={() => loginPressed()}>
-        <Text style={styles.buttonText}>Log in</Text>
+        <Text style={[styles.text, styles.white]}>Log in</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => signUpPressed()}>
-        <Text style={styles.buttonText}>Sign up</Text>
+        <Text style={[styles.text, styles.white]}>Sign up</Text>
       </TouchableOpacity>
     </View>
   );

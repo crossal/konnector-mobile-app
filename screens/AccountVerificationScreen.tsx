@@ -65,23 +65,23 @@ const AccountVerificationScreen = ({fetchWrapper, handleAccountVerifiedCallback,
   return (
     <View style={styles.container}>
       <View style={styles.containerInnerLeft}>
-        <Text style={styles.buttonLabel}>Username or email</Text>
+        <Text style={[styles.buttonLabel, styles.text]}>Username or email</Text>
         <TextInput
           placeholder="Username or email"
           value={usernameOrEmail}
           onChangeText={onChangeUsernameOrEmail}
-          style={ usernameOrEmailError == null ? styles.input : styles.inputWithError }
+          style={ usernameOrEmailError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
           autoCapitalize="none"
           textAlign="left"
           textContentType="emailAddress"
         />
         { usernameOrEmailError != null ? <Text style={styles.formErrorText}>{codeError}</Text> : <View/> }
-        <Text style={styles.buttonLabel}>Code</Text>
+        <Text style={[styles.buttonLabel, styles.text]}>Code</Text>
         <TextInput
           placeholder="Code"
           value={code}
           onChangeText={onChangeCode}
-          style={ codeError == null ? styles.input : styles.inputWithError }
+          style={ codeError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
           autoCapitalize="none"
           textAlign="left"
           textContentType="oneTimeCode"
@@ -89,7 +89,7 @@ const AccountVerificationScreen = ({fetchWrapper, handleAccountVerifiedCallback,
         { codeError != null ? <Text style={styles.formErrorText}>{codeError}</Text> : <View/> }
         { formError != null ? <Text style={styles.formErrorText}>{formError}</Text> : <View/> }
         <TouchableOpacity style={styles.button} onPress={() => handleVerify()}>
-          <Text style={styles.buttonText}>Submit</Text>
+          <Text style={[styles.text, styles.white]}>Submit</Text>
         </TouchableOpacity>
       </View>
     </View>

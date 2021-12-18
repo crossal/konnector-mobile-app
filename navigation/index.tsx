@@ -60,6 +60,11 @@ function RootNavigator() {
     setLoggingIn(false);
   }
 
+  const handleLoginNeedsVerification = (navigation) => {
+    navigation.popToTop();
+    navigation.push('AccountVerification');
+  }
+
   const handleSignedUp = (navigation) => {
     navigation.push('AccountVerification')
   }
@@ -95,7 +100,7 @@ function RootNavigator() {
                 title: 'Log in & Sign up'
               }}
             />
-            <Stack.Screen name="LogIn" children={()=><LogInScreen fetchWrapper={fetchWrapper} handleLoggedInCallback={handleLoggedIn} handleLoading={handleLoading}/>}
+            <Stack.Screen name="LogIn" children={()=><LogInScreen fetchWrapper={fetchWrapper} handleLoggedInCallback={handleLoggedIn} handleLoginNeedsVerificationCallback={handleLoginNeedsVerification} handleLoading={handleLoading}/>}
               options={{
                 title: 'Log in'
               }}
