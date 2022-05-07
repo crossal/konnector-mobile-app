@@ -10,10 +10,10 @@ The Mobile UI for Konnector
 * Install Expo CLI (React Native build tools) `$ npm install -g expo-cli`
 * See Expo instructions `$ expo`
 * If running against the backend locally
-  * Ensure the backend's `secure` flag is not in use for cookies
+  * Ensure the backend's `secure` flag is not in use for cookies (`server.servlet.session.cookie.secure` in application.properties)
   * Ensure your mobile device is connected to the same WiFi device as the backend is running on
   * Ensure your firewall is turned off
-  * Update `constants/API.ts`
+  * Update `constants/API.ts` `BASE_URL`
 * Start the development server `$ expo start`/`$ npm start`
 * Open the Expo Go app on your mobile device
 * Choose the option to scan an Expo QR code through the app and point it at the QR code on your command line or Expo browser page
