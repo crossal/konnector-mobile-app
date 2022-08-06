@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     padding: 15,
     alignItems: 'center',
-    height: 50,
+    height: 55,
     borderColor: 'gray',
     borderBottomWidth: 1,
     borderLeftWidth: 1,
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   },
   input: {
     alignSelf: 'stretch',
-    height: 50,
+    height: 55,
     marginBottom: 10,
     borderWidth: 1,
     borderRadius: 5,
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   },
   inputWithError: {
     alignSelf: 'stretch',
-    height: 50,
+    height: 55,
     marginBottom: 10,
     borderWidth: 1,
     borderRadius: 5,
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   },
   centredInput: {
     width: 250,
-    height: 50,
+    height: 55,
     marginBottom: 10,
     borderWidth: 1,
     borderRadius: 5,

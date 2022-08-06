@@ -60,6 +60,10 @@ function RootNavigator() {
     setLoggingIn(false);
   }
 
+  const handleAddingNewConnection = (navigation) => {
+    navigation.push('Add Connection')
+  }
+
   const handleLoginNeedsVerification = (navigation) => {
     navigation.popToTop();
     navigation.push('AccountVerification');
