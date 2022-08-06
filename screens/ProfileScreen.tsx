@@ -8,6 +8,7 @@ import * as apiConstants from '../constants/API.ts';
 import { FontAwesome } from '@expo/vector-icons';
 
 const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback, handleLoading}) => {
+
   const [isLoading, setLoading] = React.useState(1);
 
   const [user, setUser] = React.useState({});
@@ -35,7 +36,7 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback, handleLoadin
   const [deleteContactDetailFormError, setDeleteContactDetailFormError] = React.useState(null);
 
   useEffect(() => {
-    fetchWrapper.get(apiConstants.BASE_URL + "/api/users/" + userId).then(response => {
+    fetchWrapper.get(apiConstants.BASE_URL + "/api/users/" + userId + '?view-type=1').then(response => {
       setUser(response.data);
       setLoading(isLoading - 1);
     }).catch(e => {
@@ -46,7 +47,7 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback, handleLoadin
 
   const getPage = (pageNumber) => {
     setLoading(isLoading + 1);
-    fetchWrapper.get(apiConstants.BASE_URL + "/api/contact-details?userId=" + userId + "&pageNumber=" + pageNumber + "&pageSize=" + apiConstants.CONTACT_DETAILS_PAGE_SIZE).then(response => {
+    fetchWrapper.get(apiConstants.BASE_URL + "/api/contact-details?user-id=" + userId + "&page-number=" + pageNumber + "&page-size=" + apiConstants.CONTACT_DETAILS_PAGE_SIZE).then(response => {
       setContactDetails(response.data);
       setLoading(isLoading - 1);
       setTotalPages(Math.floor(response.headers.get(apiConstants.HEADER_TOTAL_COUNT) / apiConstants.CONTACT_DETAILS_PAGE_SIZE) + 1);

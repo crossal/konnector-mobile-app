@@ -8,6 +8,7 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ProfileScreen from '../screens/ProfileScreen';
 import ConnectionsScreen from '../screens/ConnectionsScreen';
+import AddConnectionsScreen from '../screens/AddConnectionsScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import { BottomTabParamList, ProfileTabParamList, ConnectionsTabParamList, NotificationsTabParamList } from '../types';
 
@@ -18,6 +19,10 @@ const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 const BottomTabNavigator = ({fetchWrapper, userId, handleLogoutCallback, handleLoading}) => {
   const colorScheme = useColorScheme();
+
+  const handleAddConnections = (navigation) => {
+    navigation.push('AddConnectionsScreen')
+  }
 
   return (
     <BottomTab.Navigator
@@ -32,14 +37,14 @@ const BottomTabNavigator = ({fetchWrapper, userId, handleLogoutCallback, handleL
       />
       <BottomTab.Screen
         name="Connections"
-        component={ConnectionsTabNavigator}
+        children={()=><ConnectionsTabNavigator fetchWrapper={fetchWrapper} userId={userId} handleLoading={handleLoading} handleAddConnections={handleAddConnections}/>}
         options={{
           tabBarIcon: ({ color }) => <FontAwesome5 name="user-friends" size={24} color={color} />,
         }}
       />
       <BottomTab.Screen
         name="Notifications"
-        component={NotificationsTabNavigator}
+        children={()=><NotificationsTabNavigator fetchWrapper={fetchWrapper} userId={userId} handleLoading={handleLoading}/>}
         options={{
           tabBarIcon: ({ color }) => <Ionicons name="notifications" size={24} color={color} />,
         }}
@@ -52,6 +57,7 @@ export default BottomTabNavigator;
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
+
 const ProfileTabStack = createStackNavigator<ProfileTabParamList>();
 
 const ProfileTabNavigator = ({fetchWrapper, userId, handleLogoutCallback, handleLoading}) => {
@@ -68,13 +74,18 @@ const ProfileTabNavigator = ({fetchWrapper, userId, handleLogoutCallback, handle
 
 const ConnectionsTabStack = createStackNavigator<ConnectionsTabParamList>();
 
-function ConnectionsTabNavigator() {
+const ConnectionsTabNavigator = ({fetchWrapper, userId, handleLoading, handleAddConnections}) => {
   return (
     <ConnectionsTabStack.Navigator>
       <ConnectionsTabStack.Screen
         name="ConnectionsScreen"
-        component={ConnectionsScreen}
+        children={()=><ConnectionsScreen fetchWrapper={fetchWrapper} userId={userId} handleLoading={handleLoading} handleAddConnections={handleAddConnections}/>}
         options={{ headerTitle: 'Connections' }}
+      />
+      <ConnectionsTabStack.Screen
+        name="AddConnectionsScreen"
+        children={()=><AddConnectionsScreen fetchWrapper={fetchWrapper} userId={userId} handleLoading={handleLoading}/>}
+        options={{ headerTitle: 'Add Connections' }}
       />
     </ConnectionsTabStack.Navigator>
   );
@@ -82,12 +93,12 @@ function ConnectionsTabNavigator() {
 
 const NotificationsTabStack = createStackNavigator<NotificationsTabParamList>();
 
-function NotificationsTabNavigator() {
+const NotificationsTabNavigator = ({fetchWrapper, userId, handleLoading}) => {
   return (
     <NotificationsTabStack.Navigator>
       <NotificationsTabStack.Screen
         name="NotificationsScreen"
-        component={NotificationsScreen}
+        children={()=><NotificationsScreen fetchWrapper={fetchWrapper} userId={userId} handleLoading={handleLoading}/>}
         options={{ headerTitle: 'Notifications' }}
       />
     </NotificationsTabStack.Navigator>
