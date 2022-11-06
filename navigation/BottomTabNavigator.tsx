@@ -9,6 +9,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import ProfileScreen from '../screens/ProfileScreen';
 import ConnectionsScreen from '../screens/ConnectionsScreen';
 import AddConnectionsScreen from '../screens/AddConnectionsScreen';
+import ConnectedUserProfile from '../screens/ConnectedUserProfile';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import { BottomTabParamList, ProfileTabParamList, ConnectionsTabParamList, NotificationsTabParamList } from '../types';
 
@@ -24,6 +25,10 @@ const BottomTabNavigator = ({fetchWrapper, userId, handleLogoutCallback, handleL
     navigation.push('AddConnectionsScreen')
   }
 
+  const handleViewConnectedUser = (navigation, connection) => {
+    navigation.push('ConnectedUserProfile')
+  }
+
   return (
     <BottomTab.Navigator
       initialRouteName="ProfileTab"
@@ -37,7 +42,7 @@ const BottomTabNavigator = ({fetchWrapper, userId, handleLogoutCallback, handleL
       />
       <BottomTab.Screen
         name="Connections"
-        children={()=><ConnectionsTabNavigator fetchWrapper={fetchWrapper} userId={userId} handleLoading={handleLoading} handleAddConnections={handleAddConnections}/>}
+        children={()=><ConnectionsTabNavigator fetchWrapper={fetchWrapper} userId={userId} handleLoading={handleLoading} handleAddConnections={handleAddConnections} handleViewConnectedUser={handleViewConnectedUser}/>}
         options={{
           tabBarIcon: ({ color }) => <FontAwesome5 name="user-friends" size={24} color={color} />,
         }}
@@ -74,18 +79,23 @@ const ProfileTabNavigator = ({fetchWrapper, userId, handleLogoutCallback, handle
 
 const ConnectionsTabStack = createStackNavigator<ConnectionsTabParamList>();
 
-const ConnectionsTabNavigator = ({fetchWrapper, userId, handleLoading, handleAddConnections}) => {
+const ConnectionsTabNavigator = ({fetchWrapper, userId, handleLoading, handleAddConnections, handleViewConnectedUser}) => {
   return (
     <ConnectionsTabStack.Navigator>
       <ConnectionsTabStack.Screen
         name="ConnectionsScreen"
-        children={()=><ConnectionsScreen fetchWrapper={fetchWrapper} userId={userId} handleLoading={handleLoading} handleAddConnections={handleAddConnections}/>}
+        children={()=><ConnectionsScreen fetchWrapper={fetchWrapper} userId={userId} handleLoading={handleLoading} handleAddConnections={handleAddConnections} handleViewConnectedUser={handleViewConnectedUser}/>}
         options={{ headerTitle: 'Connections' }}
       />
       <ConnectionsTabStack.Screen
         name="AddConnectionsScreen"
         children={()=><AddConnectionsScreen fetchWrapper={fetchWrapper} userId={userId} handleLoading={handleLoading}/>}
         options={{ headerTitle: 'Add Connections' }}
+      />
+      <ConnectionsTabStack.Screen
+        name="ConnectedUserProfile"
+        children={()=><ConnectedUserProfile fetchWrapper={fetchWrapper} userId={userId} handleLoading={handleLoading}/>}
+        options={{ headerTitle: 'Connection Profile' }}
       />
     </ConnectionsTabStack.Navigator>
   );

@@ -16,6 +16,7 @@ export type ProfileTabParamList = {
 export type ConnectionsTabParamList = {
   ConnectionsScreen: undefined;
   AddConnectionsScreen: undefined;
+  ConnectedUserProfile: undefined;
 };
 
 export type NotificationsTabParamList = {

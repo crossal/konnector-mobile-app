@@ -22,22 +22,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20
   },
-  containerLeft: {
+  scrollViewContainer: {
     flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    padding: 20
-  },
-  noPadding: {
-    padding: 0
   },
   scrollView: {
     flex: 1,
-    width: "100%",
-    padding: 20
+    width: "100%"
   },
   scrollViewContent: {
-
+    padding: 20
   },
   containerInnerLeft: {
 
@@ -48,6 +43,10 @@ const styles = StyleSheet.create({
   },
   title2: {
     fontSize: 18,
+    fontWeight: 'bold',
+  },
+  title3: {
+    fontSize: 16,
     fontWeight: 'bold',
   },
   separator: {
@@ -165,6 +164,12 @@ const styles = StyleSheet.create({
   },
   smallSpaceRight: {
     marginRight: 10
+  },
+  searchBar: {
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: 'grey',
+    elevation : 0
   }
 });
 
