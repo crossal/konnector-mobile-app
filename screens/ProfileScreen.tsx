@@ -47,10 +47,10 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback, handleLoadin
 
   const getPage = (pageNumber) => {
     setLoading(isLoading + 1);
-    fetchWrapper.get(apiConstants.BASE_URL + "/api/contact-details?user-id=" + userId + "&page-number=" + pageNumber + "&page-size=" + apiConstants.CONTACT_DETAILS_PAGE_SIZE).then(response => {
+    fetchWrapper.get(apiConstants.BASE_URL + "/api/contact-details?user-id=" + userId + "&page-number=" + pageNumber + "&page-size=" + apiConstants.PAGE_SIZE).then(response => {
       setContactDetails(response.data);
       setLoading(isLoading - 1);
-      setTotalPages(Math.floor(response.headers.get(apiConstants.HEADER_TOTAL_COUNT) / apiConstants.CONTACT_DETAILS_PAGE_SIZE) + 1);
+      setTotalPages(getPageCount(response.headers.get(apiConstants.HEADER_TOTAL_COUNT)));
       setCurrentPage(pageNumber);
     }).catch(e => {
       setLoading(isLoading - 1);
@@ -172,7 +172,7 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback, handleLoadin
   }
 
   const handlePageRefresh = () => {
-    getPage(currentPage);
+    getPage(1);
   }
 
   const onChangeNewContactDetailType = (changedNewContactDetailType) => {
@@ -201,150 +201,153 @@ const ProfileScreen = ({fetchWrapper, userId, handleLogoutCallback, handleLoadin
   }
 
   return (
-    <View style={[styles.containerLeft, styles.noPadding]}>
+    <View style={styles.scrollViewContainer}>
       {isLoading > 0 ? <ActivityIndicator size="large" color={colours.primary}/> : (
         <ScrollView style={styles.scrollView}>
-          <Text style={styles.title}>Account Details</Text>
-          <Text style={[styles.text, styles.buttonLabel]}>Email</Text>
-          <TextInput
-            value={user.email}
-            placeholder={'Email'}
-            style={[styles.input, styles.text]}
-            editable={false}
-          />
-          { emailError != null ? <Text style={styles.formErrorText}>{emailError}</Text> : <View/> }
-          <Text style={[styles.text, styles.buttonLabel]}>Username</Text>
-          <TextInput
-            value={user.username}
-            placeholder={'Username'}
-            style={[styles.input, styles.text]}
-            editable={false}
-          />
-          { usernameError != null ? <Text style={styles.formErrorText}>{usernameError}</Text> : <View/> }
-          <Text style={[styles.text, styles.buttonLabel]}>Password</Text>
-          <TextInput
-            value={user.oldPassword}
-            placeholder={'Password'}
-            style={ oldPasswordError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
-            onChangeText={onChangeOldPassword}
-            autoCapitalize="none"
-            textContentType="password"
-            secureTextEntry
-          />
-          { oldPasswordError != null ? <Text style={styles.formErrorText}>{oldPasswordError}</Text> : <View/> }
-          <Text style={[styles.text, styles.buttonLabel]}>New Password</Text>
-          <TextInput
-            value={user.password}
-            placeholder={'New Password'}
-            style={ passwordError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
-            onChangeText={onChangePassword}
-            autoCapitalize="none"
-            textContentType="password"
-            secureTextEntry
-          />
-          { passwordError != null ? <Text style={styles.formErrorText}>{passwordError}</Text> : <View/> }
-          <Text style={[styles.text, styles.buttonLabel]}>First Name</Text>
-          <TextInput
-            value={user.firstName}
-            placeholder={'First name'}
-            style={ firstNameError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
-            onChangeText={onChangeFirstName}
-            textContentType="givenName"
-          />
-          { firstNameError != null ? <Text style={styles.formErrorText}>{firstNameError}</Text> : <View/> }
-          <Text style={[styles.text, styles.buttonLabel]}>Last Name</Text>
-          <TextInput
-            value={user.lastName}
-            placeholder={'Last name'}
-            style={ lastNameError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
-            onChangeText={onChangeLastName}
-            textContentType="familyName"
-          />
-          { lastNameError != null ? <Text style={styles.formErrorText}>{lastNameError}</Text> : <View/> }
-          { formError != null ? <Text style={styles.centredFormErrorText}>{formError}</Text> : <View/> }
-          <TouchableOpacity style={styles.button} onPress={() => handleSave()}>
-            <Text style={[styles.text, styles.white]}>Save</Text>
-          </TouchableOpacity>
+          <View style={styles.scrollViewContent}>
+            <Text style={styles.title}>Account Details</Text>
+            <Text style={[styles.text, styles.buttonLabel]}>Email</Text>
+            <TextInput
+              value={user.email}
+              placeholder={'Email'}
+              style={[styles.input, styles.text]}
+              editable={false}
+            />
+            { emailError != null ? <Text style={styles.formErrorText}>{emailError}</Text> : <View/> }
+            <Text style={[styles.text, styles.buttonLabel]}>Username</Text>
+            <TextInput
+              value={user.username}
+              placeholder={'Username'}
+              style={[styles.input, styles.text]}
+              editable={false}
+            />
+            { usernameError != null ? <Text style={styles.formErrorText}>{usernameError}</Text> : <View/> }
+            <Text style={[styles.text, styles.buttonLabel]}>Password</Text>
+            <TextInput
+              value={user.oldPassword}
+              placeholder={'Password'}
+              style={ oldPasswordError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
+              onChangeText={onChangeOldPassword}
+              autoCapitalize="none"
+              textContentType="password"
+              secureTextEntry
+            />
+            { oldPasswordError != null ? <Text style={styles.formErrorText}>{oldPasswordError}</Text> : <View/> }
+            <Text style={[styles.text, styles.buttonLabel]}>New Password</Text>
+            <TextInput
+              value={user.password}
+              placeholder={'New Password'}
+              style={ passwordError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
+              onChangeText={onChangePassword}
+              autoCapitalize="none"
+              textContentType="password"
+              secureTextEntry
+            />
+            { passwordError != null ? <Text style={styles.formErrorText}>{passwordError}</Text> : <View/> }
+            <Text style={[styles.text, styles.buttonLabel]}>First Name</Text>
+            <TextInput
+              value={user.firstName}
+              placeholder={'First name'}
+              style={ firstNameError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
+              onChangeText={onChangeFirstName}
+              textContentType="givenName"
+            />
+            { firstNameError != null ? <Text style={styles.formErrorText}>{firstNameError}</Text> : <View/> }
+            <Text style={[styles.text, styles.buttonLabel]}>Last Name</Text>
+            <TextInput
+              value={user.lastName}
+              placeholder={'Last name'}
+              style={ lastNameError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
+              onChangeText={onChangeLastName}
+              textContentType="familyName"
+            />
+            { lastNameError != null ? <Text style={styles.formErrorText}>{lastNameError}</Text> : <View/> }
+            { formError != null ? <Text style={styles.centredFormErrorText}>{formError}</Text> : <View/> }
+            <TouchableOpacity style={styles.button} onPress={() => handleSave()}>
+              <Text style={[styles.text, styles.white]}>Save</Text>
+            </TouchableOpacity>
 
-          <View style={styles.smallSpace}/>
+            <View style={styles.smallSpace}/>
 
-          <Text style={styles.title}>Contact Details</Text>
-          {
-            contactDetails.map((item, index, array) => {
-              return (
-                <View key={index} style={[styles.listItem, index == 0 ? styles.listItemTop : styles.empty, index == array.length - 1 ? styles.listItemBottom : styles.empty]}>
-                  <Text style={[styles.text, styles.listText]} key={index}>{item.type}: {item.value}</Text>
-                  <TouchableOpacity style={[styles.listButton]} onPress={() => handleDeleteContactDetail(item, index)}>
-                    <FontAwesome name="remove" style={[styles.text, styles.white]} />
-                  </TouchableOpacity>
-                </View>
-              );
-            })
-          }
+            <Text style={styles.title}>Contact Details</Text>
 
-          { newContactDetailFormError != null ? <Text style={styles.centredFormErrorText}>{newContactDetailFormError}</Text> : <View/> }
-
-          <View style={styles.smallSpace}/>
-
-          { contactDetails.length > 0 ? <></> :
-            <View>
-              <Text style={styles.text}>None</Text>
-              <View style={styles.smallSpace}/>
-            </View>
-          }
-
-          <View style={styles.pagination}>
-            { contactDetails.length == 0 || currentPage == 1 ? <></> :
-              <TouchableOpacity style={[styles.button, styles.smallSpaceRight]} onPress={() => handlePageBack()}>
-                <FontAwesome name="chevron-left" style={[styles.text, styles.white]} />
-              </TouchableOpacity>
+            {
+              contactDetails.map((item, index, array) => {
+                return (
+                  <View key={index} style={[styles.listItem, index == 0 ? styles.listItemTop : styles.empty, index == array.length - 1 ? styles.listItemBottom : styles.empty]}>
+                    <Text style={[styles.text, styles.listText]} key={index}><Text style={{fontWeight: "bold"}}>{item.type}:</Text> {item.value}</Text>
+                    <TouchableOpacity style={[styles.listButton]} onPress={() => handleDeleteContactDetail(item, index)}>
+                      <FontAwesome name="remove" style={[styles.text, styles.white]} />
+                    </TouchableOpacity>
+                  </View>
+                );
+              })
             }
-            { totalPages <= 1 ? <></> :
-              <View style={[styles.input, styles.text, styles.smallSpaceRight]}>
-                <Text style={styles.text}>{currentPage}</Text>
+
+            { newContactDetailFormError != null ? <Text style={styles.centredFormErrorText}>{newContactDetailFormError}</Text> : <View/> }
+
+            <View style={styles.smallSpace}/>
+
+            { contactDetails.length > 0 ? <></> :
+              <View>
+                <Text style={styles.text}>None</Text>
+                <View style={styles.smallSpace}/>
               </View>
             }
-            { contactDetails.length == 0 || currentPage >= totalPages ? <></> :
-              <TouchableOpacity style={[styles.button, styles.smallSpaceRight]} onPress={() => handlePageForward()}>
-                <FontAwesome name="chevron-right" style={[styles.text, styles.white]} />
+
+            <View style={styles.pagination}>
+              { contactDetails.length == 0 || currentPage == 1 ? <></> :
+                <TouchableOpacity style={[styles.button, styles.smallSpaceRight]} onPress={() => handlePageBack()}>
+                  <FontAwesome name="chevron-left" style={[styles.text, styles.white]} />
+                </TouchableOpacity>
+              }
+              { totalPages <= 1 ? <></> :
+                <View style={[styles.input, styles.text, styles.smallSpaceRight]}>
+                  <Text style={styles.text}>{currentPage}</Text>
+                </View>
+              }
+              { contactDetails.length == 0 || currentPage >= totalPages ? <></> :
+                <TouchableOpacity style={[styles.button, styles.smallSpaceRight]} onPress={() => handlePageForward()}>
+                  <FontAwesome name="chevron-right" style={[styles.text, styles.white]} />
+                </TouchableOpacity>
+              }
+              <TouchableOpacity style={[styles.button, styles.smallSpaceRight]} onPress={() => handlePageRefresh()}>
+                <FontAwesome name="refresh" style={[styles.text, styles.white]} />
               </TouchableOpacity>
-            }
-            <TouchableOpacity style={[styles.button, styles.smallSpaceRight]} onPress={() => handlePageRefresh()}>
-              <FontAwesome name="refresh" style={[styles.text, styles.white]} />
+            </View>
+
+            <View style={styles.smallSpace}/>
+
+            <Text style={styles.title2}>New Contact Detail</Text>
+
+            <TextInput
+              value={newContactDetailType}
+              placeholder={'Type'}
+              style={ newContactDetailTypeError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
+              onChangeText={onChangeNewContactDetailType}
+            />
+            { newContactDetailTypeError != null ? <Text style={styles.formErrorText}>{newContactDetailTypeError}</Text> : <View/> }
+
+            <TextInput
+              value={newContactDetailValue}
+              placeholder={'Value'}
+              style={ newContactDetailValueError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
+              onChangeText={onChangeNewContactDetailValue}
+            />
+            { newContactDetailValueError != null ? <Text style={styles.formErrorText}>{newContactDetailValueError}</Text> : <View/> }
+            { newContactDetailFormError != null ? <Text style={styles.centredFormErrorText}>{newContactDetailFormError}</Text> : <View/> }
+            <TouchableOpacity style={styles.button} onPress={() => handleAddNewContactDetail()}>
+              <Text style={[styles.text, styles.white]}>Add</Text>
             </TouchableOpacity>
+
+            <View style={styles.smallSpace}/>
+
+            <TouchableOpacity style={styles.button} onPress={() => handleLogout()}>
+              <Text style={[styles.text, styles.white]}>Log Out</Text>
+            </TouchableOpacity>
+
+            <View style={styles.smallSpace}/>
           </View>
-
-          <View style={styles.smallSpace}/>
-
-          <Text style={styles.title2}>New Contact Detail</Text>
-
-          <TextInput
-            value={newContactDetailType}
-            placeholder={'Type'}
-            style={ newContactDetailTypeError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
-            onChangeText={onChangeNewContactDetailType}
-          />
-          { newContactDetailTypeError != null ? <Text style={styles.formErrorText}>{newContactDetailTypeError}</Text> : <View/> }
-
-          <TextInput
-            value={newContactDetailValue}
-            placeholder={'Value'}
-            style={ newContactDetailValueError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
-            onChangeText={onChangeNewContactDetailValue}
-          />
-          { newContactDetailValueError != null ? <Text style={styles.formErrorText}>{newContactDetailValueError}</Text> : <View/> }
-          { newContactDetailFormError != null ? <Text style={styles.centredFormErrorText}>{newContactDetailFormError}</Text> : <View/> }
-          <TouchableOpacity style={styles.button} onPress={() => handleAddNewContactDetail()}>
-            <Text style={[styles.text, styles.white]}>Add</Text>
-          </TouchableOpacity>
-
-          <View style={styles.smallSpace}/>
-
-          <TouchableOpacity style={styles.button} onPress={() => handleLogout()}>
-            <Text style={[styles.text, styles.white]}>Log Out</Text>
-          </TouchableOpacity>
-
-          <View style={styles.smallSpace}/>
         </ScrollView>
       )}
     </View>
