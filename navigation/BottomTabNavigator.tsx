@@ -32,7 +32,7 @@ const BottomTabNavigator = ({fetchWrapper, userId, handleLogoutCallback, handleL
   return (
     <BottomTab.Navigator
       initialRouteName="ProfileTab"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      screenOptions={{ tabBarActiveTintColor: Colors[colorScheme].tint, headerShown: false }}>
       <BottomTab.Screen
         name="Profile"
         children={()=><ProfileTabNavigator fetchWrapper={fetchWrapper} userId={userId} handleLogoutCallback={handleLogoutCallback} handleLoading={handleLoading}/>}

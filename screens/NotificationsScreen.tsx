@@ -100,11 +100,23 @@ const NotificationsScreen = ({fetchWrapper, userId, handleLoading}) => {
     }
   }
 
-  const getNotificationMessage = (notification) => {
+  const NotificationMessage = ({notification, index}) => {
     switch(notification.type) {
-      case 0: return notification.sender.username + ' wants to connect.';
-      case 1: return notification.sender.username + ' accepted your connection request.';
-      default: return 'Unknown notification type..';
+      case 0: return (
+        <Text style={[styles.text, styles.listText]} key={index}>
+          <Text style={{fontWeight: "bold"}}>{notification.sender.username}</Text> wants to connect.
+        </Text>
+      );
+      case 1: return (
+        <Text style={[styles.text, styles.listText]} key={index}>
+          <Text style={{fontWeight: "bold"}}>{notification.sender.username}</Text> accepted your connection request.
+        </Text>
+      );
+      default: return (
+        <Text style={[styles.text, styles.listText]} key={index}>
+          Unknown notification type...
+        </Text>
+      );
     }
   }
 
@@ -116,7 +128,7 @@ const NotificationsScreen = ({fetchWrapper, userId, handleLoading}) => {
             { notifications.map((item, index, array) => {
                 return (
                   <View key={index} style={[styles.listItem, index == 0 ? styles.listItemTop : styles.empty, index == array.length - 1 ? styles.listItemBottom : styles.empty]}>
-                    <Text style={[styles.text, styles.listText]} key={index}>{getNotificationMessage(item)}</Text>
+                    <NotificationMessage notification={item} index={index}/>
                     { item.type == 0 ?
                         <TouchableOpacity style={[styles.listButton, styles.smallSpaceRight]} onPress={() => acceptNotificationAction(item, index)}>
                           <FontAwesome name="check" style={[styles.text, styles.white]} />
