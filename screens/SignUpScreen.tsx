@@ -140,78 +140,80 @@ const SignUpScreen = ({fetchWrapper, handleSignedUpCallback, handleLoading}) => 
   }
 
   return (
-    <View style={styles.containerLeft}>
+    <View style={styles.scrollViewContainer}>
       <ScrollView style={styles.scrollView}>
-        <Text style={[styles.buttonLabel, styles.text]}>Email</Text>
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={onChangeEmail}
-          style={ emailError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
-          autoCapitalize="none"
-          textAlign="left"
-          textContentType="emailAddress"
-        />
-        { emailError != null ? <Text style={styles.formErrorText}>{emailError}</Text> : <View/> }
-        <Text style={[styles.buttonLabel, styles.text]}>Username</Text>
-        <TextInput
-          placeholder="Username"
-          value={username}
-          onChangeText={onChangeUsername}
-          style={ usernameError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
-          autoCapitalize="none"
-          textAlign="left"
-          textContentType="username"
-        />
-        { usernameError != null ? <Text style={styles.formErrorText}>{usernameError}</Text> : <View/> }
-        <Text style={[styles.buttonLabel, styles.text]}>First name</Text>
-        <TextInput
-          placeholder="First name"
-          value={firstName}
-          onChangeText={onChangeFirstName}
-          style={ firstNameError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
-          textAlign="left"
-          textContentType="givenName"
-        />
-        { firstNameError != null ? <Text style={styles.formErrorText}>{firstNameError}</Text> : <View/> }
-        <Text style={[styles.buttonLabel, styles.text]}>Last name</Text>
-        <TextInput
-          placeholder="Last name"
-          value={lastName}
-          onChangeText={onChangeLastName}
-          style={ lastNameError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
-          textAlign="left"
-          textContentType="familyName"
-        />
-        { lastNameError != null ? <Text style={styles.formErrorText}>{lastNameError}</Text> : <View/> }
-        <Text style={[styles.buttonLabel, styles.text]}>Password</Text>
-        <TextInput
-          placeholder="Password"
-          value={password}
-          onChangeText={onChangePassword}
-          secureTextEntry
-          style={ passwordError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
-          autoCapitalize="none"
-          textAlign="left"
-          textContentType="password"
-        />
-        { passwordError != null ? <Text style={styles.formErrorText}>{passwordError}</Text> : <View/> }
-        <Text style={[styles.buttonLabel, styles.text]}>Password confirmation</Text>
-        <TextInput
-          placeholder="Password confirmation"
-          value={passwordConfirmation}
-          onChangeText={onChangePasswordConfirmation}
-          secureTextEntry
-          style={ passwordConfirmationError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
-          autoCapitalize="none"
-          textAlign="left"
-          textContentType="password"
-        />
-        { passwordConfirmationError != null ? <Text style={styles.formErrorText}>{passwordConfirmationError}</Text> : <View/> }
-        { formError != null ? <Text style={styles.formErrorText}>{formError}</Text> : <View/> }
-        <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>
-          <Text style={[styles.text, styles.white]}>Submit</Text>
-        </TouchableOpacity>
+        <View style={styles.scrollViewContent}>
+          <Text style={[styles.buttonLabel, styles.text]}>Email</Text>
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={onChangeEmail}
+            style={ emailError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
+            autoCapitalize="none"
+            textAlign="left"
+            textContentType="emailAddress"
+          />
+          { emailError != null ? <Text style={styles.formErrorText}>{emailError}</Text> : <View/> }
+          <Text style={[styles.buttonLabel, styles.text]}>Username</Text>
+          <TextInput
+            placeholder="Username"
+            value={username}
+            onChangeText={onChangeUsername}
+            style={ usernameError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
+            autoCapitalize="none"
+            textAlign="left"
+            textContentType="username"
+          />
+          { usernameError != null ? <Text style={styles.formErrorText}>{usernameError}</Text> : <View/> }
+          <Text style={[styles.buttonLabel, styles.text]}>First name</Text>
+          <TextInput
+            placeholder="First name"
+            value={firstName}
+            onChangeText={onChangeFirstName}
+            style={ firstNameError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
+            textAlign="left"
+            textContentType="givenName"
+          />
+          { firstNameError != null ? <Text style={styles.formErrorText}>{firstNameError}</Text> : <View/> }
+          <Text style={[styles.buttonLabel, styles.text]}>Last name</Text>
+          <TextInput
+            placeholder="Last name"
+            value={lastName}
+            onChangeText={onChangeLastName}
+            style={ lastNameError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
+            textAlign="left"
+           textContentType="familyName"
+          />
+          { lastNameError != null ? <Text style={styles.formErrorText}>{lastNameError}</Text> : <View/> }
+          <Text style={[styles.buttonLabel, styles.text]}>Password</Text>
+          <TextInput
+            placeholder="Password"
+            value={password}
+            onChangeText={onChangePassword}
+            secureTextEntry
+            style={ passwordError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
+            autoCapitalize="none"
+            textAlign="left"
+            textContentType="password"
+          />
+          { passwordError != null ? <Text style={styles.formErrorText}>{passwordError}</Text> : <View/> }
+          <Text style={[styles.buttonLabel, styles.text]}>Password confirmation</Text>
+          <TextInput
+            placeholder="Password confirmation"
+            value={passwordConfirmation}
+            onChangeText={onChangePasswordConfirmation}
+            secureTextEntry
+            style={ passwordConfirmationError == null ? [styles.input, styles.text] : [styles.inputWithError, styles.text] }
+            autoCapitalize="none"
+            textAlign="left"
+            textContentType="password"
+          />
+          { passwordConfirmationError != null ? <Text style={styles.formErrorText}>{passwordConfirmationError}</Text> : <View/> }
+          { formError != null ? <Text style={styles.formErrorText}>{formError}</Text> : <View/> }
+          <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>
+            <Text style={[styles.text, styles.white]}>Submit</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   );
